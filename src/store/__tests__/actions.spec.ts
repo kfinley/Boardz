@@ -13,7 +13,7 @@ const mockBoardsReponse = [
 ];
 
 describe("fetchBoards", () => {
-  const api = "https://bubblingocean.com/api/v1";
+  const api = "https://boardz.app/api/v1";
   const endpoint = "/boards";
 
   let commit = jest.fn();

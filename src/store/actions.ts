@@ -4,7 +4,7 @@ import Axios from "axios";
 
 export const actions: ActionTree<AppState, any> = {
   async fetchBoards({ commit, dispatch }) {
-    const url = "https://bubblingocean.com/api/v1/boards";
+    const url = "https://boardz.app/api/v1/boards";
 
     try {
       const response = await Axios.get(url);
