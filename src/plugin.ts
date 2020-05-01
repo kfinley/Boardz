@@ -1,6 +1,6 @@
 import Vue, { PluginFunction, PluginObject } from "vue";
-import { Store, MutationPayload } from "vuex";
-import router from "vue-router";
+import { Store, MutationPayload, SubscribeActionOptions, ActionPayload } from "vuex";
+import router, { Route } from "vue-router";
 import VuexPersist from "vuex-persist";
 import VueProgressBar from "vue-progressbar";
 
@@ -8,17 +8,18 @@ import BoardsModule from "./store/index";
 import { AppState } from "./store/state";
 import components from "./components";
 
-export interface IBoardsPlugin extends PluginObject<Record<string, any>> {
-  install: PluginFunction<Record<string, any>>;
+export interface BoardsPlugin extends PluginObject<BoardPluginOptions> {
+  install: PluginFunction<BoardPluginOptions>;
 }
 
-export interface IBoardPluginOptions {
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
+export interface BoardPluginOptions {
   router: router;
-  store: Store<any>;
+  store: Store<AppState>;
 }
 
 const BoardPlugin = {
-  install(vue: typeof Vue, options?: IBoardPluginOptions) {
+  install(vue: typeof Vue, options?: BoardPluginOptions) {
     if (options !== undefined && options.router && options.store) {
       vue.use(VueProgressBar, {
         color: "white",
@@ -45,6 +46,7 @@ const BoardPlugin = {
       ];
 
       Object.keys(components).forEach((name) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Vue.component(name, (components as any)[name]);
       });
 
@@ -55,22 +57,23 @@ const BoardPlugin = {
         key: "boards-vuex", // The key to store the state on in the storage provider.
         storage: window.localStorage, // or window.sessionStorage or localForage
         // Function that passes the state and returns the state with only the objects you want to store.
-        reducer: (state: { News: AppState }) => ({
-          //   News: {
-          //     rejected: state.News.rejected,
-          //     skipped: state.News.skipped,
-          //     liked: state.News.liked,
-          //     showLiked: state.News.showLiked,
-          //     showSkipped: state.News.showSkipped
-          //   }
-        }),
+        // reducer: (state: { News: AppState }) => ({
+        //     News: {
+        //       rejected: state.News.rejected,
+        //       skipped: state.News.skipped,
+        //       liked: state.News.liked,
+        //       showLiked: state.News.showLiked,
+        //       showSkipped: state.News.showSkipped
+        //     }
+        // }),
         // Function that passes a mutation and lets you decide if it should update the state in localStorage.
         // filter: (mutation) => true
       });
 
       vuexLocalStorage.plugin(options.store);
 
-      const waitForStorageToBeReady = async (to: any, from: any, next: any) => {
+      const waitForStorageToBeReady = async (to: Route, from: Route, next: Function) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await (options as any).store.restored;
         window.console.log(options.store.state);
         window.console.log("state restored");
@@ -82,11 +85,12 @@ const BoardPlugin = {
       const inBrowser = typeof window !== "undefined";
       if (inBrowser) {
         // Add in browser api
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).News = {
           _store: options.store,
           store: {
             subscribe: function(
-              fn: (mutation: MutationPayload, state: any) => any
+              fn: (mutation: MutationPayload, state: AppState) => Function
             ) {
               return options.store.subscribe.call(options.store, fn);
 
@@ -97,7 +101,7 @@ const BoardPlugin = {
               // arguments.length will always be same
               // return options.store.subscribe.apply(this, args);
             },
-            subscribeAction: function(fn: any) {
+            subscribeAction: function(fn: SubscribeActionOptions<ActionPayload, AppState>) {
               return options.store.subscribeAction.call(options.store, fn);
             },
           },
@@ -107,4 +111,4 @@ const BoardPlugin = {
   },
 };
 
-export default BoardPlugin as IBoardsPlugin;
+export default BoardPlugin as BoardsPlugin;

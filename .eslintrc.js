@@ -1,29 +1,44 @@
 module.exports = {
   root: true,
+
   env: {
     node: true
   },
+
   extends: [
-    'plugin:vue/essential',
+    "plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
     'eslint:recommended',
+    // Vue2 based plugins
+    // 'plugin:vue/base',
+    // 'plugin:vue/essential',
+    // 'plugin:vue/recommended'
+    // Vue3 using eslint eslint-plugin-vue 7.0.0-alpha.1
+    'plugin:vue/vue3-recommended',
+    'plugin:vue/vue3-strongly-recommended',
+    'plugin:vue/vue3-essential',
     '@vue/typescript/recommended',
-    // 'plugin:vue/vue3-recommended',
-    //'plugin:vue/base',
-    "plugin:@typescript-eslint/recommended" // Uses the recommended rules from the @typescript-eslint/eslint-plugin
   ],
-  parser: "@typescript-eslint/parser", // Specifies the ESLint parser
+
+  // Specifies the ESLint parser
+  //parser: "vue-eslint-parser",
   parserOptions: {
     ecmaVersion: 2020,
-    sourceType: "module", // Allows for the use of imports
-    //parser: "babel-eslint",
-    // ecmaFeatures: {
-    //   jsx: true // Allows for the parsing of JSX
-    // }
+    //sourceType: 'module', // Allows for the use of imports
   },
+
+  plugins: [
+    "vue",
+    "@typescript-eslint"
+  ],
+
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'vue/component-tags-order': 'off',
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "vue/singleline-html-element-content-newline": "off"
   },
+
   overrides: [
     {
       files: [

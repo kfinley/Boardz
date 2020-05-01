@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <div id="nav">
@@ -10,6 +11,7 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Vue from "vue";
 import { namespace, State, Action, Getter } from "vuex-class";
 import { AppState } from "./store/state";
@@ -60,6 +62,7 @@ export default class App extends Vue {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isStandalone = (window: any) => window.navigator.standalone;
 }
 </script>

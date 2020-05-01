@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <h1>My Boards</h1>
@@ -8,6 +9,7 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Vue from "vue";
 import { Emit, Prop, Watch, Component } from "vue-property-decorator";
 import { namespace, State, Action, Getter } from "vuex-class";

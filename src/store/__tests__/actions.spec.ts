@@ -16,7 +16,7 @@ describe("fetchBoards", () => {
   const api = "https://boardz.app/api/v1";
   const endpoint = "/boards";
 
-  let commit = jest.fn();
+  const commit = jest.fn();
 
   it("should fetch boards for user and set them in the store", async () => {
     nock(api)
