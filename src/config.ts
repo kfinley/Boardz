@@ -3,7 +3,7 @@ export interface Configuration {
 }
 
 const config: Configuration = {
-    Api: process.env.BOARDZ_API as string,
+    Api: process.env.VUE_APP_BOARDZ_API as string,
 }
 
 export const Config = config;

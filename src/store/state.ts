@@ -1,5 +1,7 @@
+import { Board } from '@/resources/types';
+
 export interface AppState {
-  allBoards: [];
+  allBoards: Board[];
 }
 
 export const state: AppState = {

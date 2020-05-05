@@ -51,7 +51,7 @@ const BoardPlugin = {
       });
 
       options.router.addRoutes(routes);
-      options.store.registerModule("News", BoardsModule);
+      options.store.registerModule("Boards", BoardsModule);
 
       const vuexLocalStorage = new VuexPersist({
         key: "boards-vuex", // The key to store the state on in the storage provider.
@@ -86,7 +86,7 @@ const BoardPlugin = {
       if (inBrowser) {
         // Add in browser api
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).News = {
+        (window as any).Boards = {
           _store: options.store,
           store: {
             subscribe: function(
