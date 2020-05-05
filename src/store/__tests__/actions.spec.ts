@@ -3,6 +3,8 @@ import nock from "nock";
 import { ActionContext } from 'vuex';
 import { AppState, state } from "@/store/state";
 
+import Api from "@/resources/api";
+
 const mockBoardsReponse = [
   {
     title: "Backlog",
@@ -13,15 +15,14 @@ const mockBoardsReponse = [
 ];
 
 describe("fetchBoards", () => {
-  const api = "https://boardz.app/api/v1";
   const endpoint = "/boards";
 
   const commit = jest.fn();
 
   it("should fetch boards for user and set them in the store", async () => {
-    nock(api)
+    nock(Api.BaseUrl)
       .defaultReplyHeaders({ "access-control-allow-origin": "*" })
-      .get(endpoint)
+      .get(endpoint)      
       .reply(200, {
         mockBoardsReponse,
       });
