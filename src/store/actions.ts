@@ -7,8 +7,7 @@ import Api from "@/resources/api";
 export const actions: ActionTree<AppState, any> = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async fetchBoards({ commit, dispatch }) {
-    try {
-      console.log("fetching Boards");      
+    try {     
       const response = await Axios.get(Api.Boards);
       commit("setBoards", response.data);
     } catch (e) {

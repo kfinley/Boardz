@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home.vue Home View renders 1`] = `
+<div class="home">
+  <board-stub></board-stub>
+</div>
+`;

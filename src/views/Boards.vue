@@ -3,42 +3,37 @@
   <div>
     <h1>My Boards</h1>
     <div v-if="boards">
-      <template v-for="(board) in boards">{{ board.name }}</template>
+      <ul>
+        <li v-for="(board) in boards" :key="board.name">{{ board.name }}</li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import Vue from "vue";
-import { Emit, Prop, Watch, Component } from "vue-property-decorator";
-import { namespace, State, Action, Getter } from "vuex-class";
+import { Component } from "vue-property-decorator";
+import { namespace, State } from "vuex-class";
+import { AppState, state } from "../store/state";
 
-import { AppState } from "../store/state";
-import { Route, RawLocation } from "vue-router";
-import { Board } from "../resources/types";
 const Store = namespace("Boards");
 
 @Component({})
 export default class Boards extends Vue {
   @State("Boards") state!: AppState;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Store.Getter boards: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Store.Action fetchBoards: any;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  $Progress: any;
+  @Store.Getter boards!: typeof state.allBoards;
+  @Store.Action fetchBoards!: Function;
 
   created() {
-    this.load();
+    this.load().then(() => {
+      return;
+    });
   }
 
   async load() {
     this.$Progress.start();
-    console.log("Fetching");
     await this.fetchBoards();
-    console.log("done");
     this.$Progress.finish();
   }
 }

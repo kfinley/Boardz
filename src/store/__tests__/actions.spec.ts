@@ -7,10 +7,10 @@ import Api from "@/resources/api";
 
 const mockBoardsReponse = [
   {
-    title: "Backlog",
+    name: "Backlog",
   },
   {
-    title: "Product",
+    name: "Product",
   },
 ];
 
@@ -29,6 +29,7 @@ describe("fetchBoards", () => {
       
     const fetchBoards = actions.fetchBoards as Function;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const actionContext: ActionContext<AppState, any> = {
       dispatch: jest.fn(),
       commit: commit,

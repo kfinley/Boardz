@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Boards.vue Boards View renders 1`] = `
+<div>
+  <h1>My Boards</h1>
+  <div>
+    <ul>
+      <li>Test</li>
+    </ul>
+  </div>
+</div>
+`;
