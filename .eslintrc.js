@@ -36,7 +36,9 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'vue/component-tags-order': 'off',
     "@typescript-eslint/explicit-function-return-type": "off",
-    "vue/singleline-html-element-content-newline": "off"
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/html-self-closing": "off",
+    "vue/max-attributes-per-line": "off"
   },
 
   overrides: [

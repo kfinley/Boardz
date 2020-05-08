@@ -1,5 +1,10 @@
 import Vue, { PluginFunction, PluginObject } from "vue";
-import { Store, MutationPayload, SubscribeActionOptions, ActionPayload } from "vuex";
+import {
+  Store,
+  MutationPayload,
+  SubscribeActionOptions,
+  ActionPayload,
+} from "vuex";
 import router, { Route } from "vue-router";
 import VuexPersist from "vuex-persist";
 import VueProgressBar from "vue-progressbar";
@@ -7,6 +12,8 @@ import VueProgressBar from "vue-progressbar";
 import BoardsModule from "./store/index";
 import { AppState } from "./store/state";
 import components from "./components";
+import { routes } from "@/router/boards";
+import { UserStatus } from "./store/modules/User";
 
 export interface BoardsPlugin extends PluginObject<BoardPluginOptions> {
   install: PluginFunction<BoardPluginOptions>;
@@ -22,28 +29,34 @@ const BoardPlugin = {
   install(vue: typeof Vue, options?: BoardPluginOptions) {
     if (options !== undefined && options.router && options.store) {
       vue.use(VueProgressBar, {
-        color: "white",
+        color: "green",
         failedColor: "red",
         height: "2px",
       });
-
+      
       // Vue.use(VueAxiosPlugin, {
       // });
 
-      const routes = [
-        {
-          path: "/",
-          name: "Home",
-          component: () =>
-            import(/* webpackChunkName: "home" */ "./views/Home.vue"),
-        },
-        {
-          path: "/boards",
-          name: "Boards",
-          component: () =>
-            import(/* webpackChunkName: "boards" */ "./views/Boards.vue"),
-        },
-      ];
+      // const routes = [
+      //   {
+      //     path: "/",
+      //     name: "Home",
+      //     component: () =>
+      //       import(/* webpackChunkName: "home" */ "./views/Home.vue"),
+      //   },
+      //   {
+      //     path: "/boards",
+      //     name: "Boards",
+      //     component: () =>
+      //       import(/* webpackChunkName: "boards" */ "./views/Boards.vue"),
+      //   },
+      //   {
+      //     path: "/login",
+      //     name: "Login",
+      //     component: () =>
+      //       import(/* webpackChunkName: "login" */ "./views/Login.vue"),
+      //   },
+      // ];
 
       Object.keys(components).forEach((name) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,6 +64,37 @@ const BoardPlugin = {
       });
 
       options.router.addRoutes(routes);
+
+      //TODO: rework this to be more modular with the plugin
+      options.router.beforeEach((to, from, next) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const status = (options as any).store.state.Boards.User.status;
+
+        switch (status) {
+          case UserStatus.LoggedIn:
+            if (to.name == "Login") {
+              next({ name: "Boards" });
+              return;
+            }
+            next();
+            return;
+          case UserStatus.LoggedOut:
+            if (to.name == "Login") {
+              next();
+              return;
+            }
+            next({ name: "Login" });
+            return;
+          case UserStatus.LoggingIn:
+            options.store.commit("Boards/User/loginFail");
+            next({ name: "Login" });
+            return;
+          default:
+            next({ name: "About" });
+            return;
+        }
+      });
+
       options.store.registerModule("Boards", BoardsModule);
 
       const vuexLocalStorage = new VuexPersist({
@@ -72,11 +116,15 @@ const BoardPlugin = {
 
       vuexLocalStorage.plugin(options.store);
 
-      const waitForStorageToBeReady = async (to: Route, from: Route, next: Function) => {
+      const waitForStorageToBeReady = async (
+        to: Route,
+        from: Route,
+        next: Function
+      ) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await (options as any).store.restored;
-        window.console.log(options.store.state);
-        window.console.log("state restored");
+        // window.console.log(options.store.state);
+        // window.console.log("state restored");
         next();
       };
 
@@ -101,7 +149,9 @@ const BoardPlugin = {
               // arguments.length will always be same
               // return options.store.subscribe.apply(this, args);
             },
-            subscribeAction: function(fn: SubscribeActionOptions<ActionPayload, AppState>) {
+            subscribeAction: function(
+              fn: SubscribeActionOptions<ActionPayload, AppState>
+            ) {
               return options.store.subscribeAction.call(options.store, fn);
             },
           },

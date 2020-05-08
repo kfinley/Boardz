@@ -1,0 +1,18 @@
+
+<template>
+  <Login />
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+
+import Login from "@/components/Login";
+
+@Component({
+  components: {
+    Login
+  }
+})
+export default class Boards extends Vue {}
+</script>

@@ -15,7 +15,7 @@
 import Vue from "vue";
 import { namespace, State, Action, Getter } from "vuex-class";
 import { AppState } from "./store/state";
-
+import { UserStatus } from "@/store/modules/User";
 const Store = namespace("Boards");
 
 export default class App extends Vue {
@@ -41,7 +41,8 @@ export default class App extends Vue {
 
   async load() {
     this.$Progress.start();
-    await this.fetchBoards();
+    if (this.$store.state.Boards.User.status == UserStatus.LoggedIn)
+      await this.fetchBoards();
     this.$Progress.finish();
   }
 
@@ -66,17 +67,34 @@ export default class App extends Vue {
   isStandalone = (window: any) => window.navigator.standalone;
 }
 </script>
+
+<style>
+  @import './assets/handdrawn.css';
+</style>
+
 <style lang="scss">
 html {
   height: 100vh;
   height: var(--app-height);
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: Avenir, Helvetica, Arial, sans-serif;*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  font-size: 1.6em;
   color: #2c3e50;
+}
+
+form * {
+  padding: 5px;
+}
+
+button {
+  
+  border: #3b3b93;
+  background: #0ca4f5;
+  font-size: 1.7em;
 }
 
 #nav {
@@ -84,11 +102,12 @@ html {
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #3b3b93;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #0ca4f5;
     }
   }
 }
+
 </style>
