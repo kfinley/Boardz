@@ -67,6 +67,10 @@ const BoardPlugin = {
 
       //TODO: rework this to be more modular with the plugin
       options.router.beforeEach((to, from, next) => {
+        if (to.meta.allowAnonymous) {
+          next();
+          return;
+        }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const status = (options as any).store.state.Boards.User.status;
 

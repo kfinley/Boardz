@@ -3,7 +3,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link>|
-      <router-link to="/boards">Boards</router-link>|
+      <router-link to="/boards">Boardz</router-link>|
       <router-link to="/about">About</router-link>
     </div>
     <router-view />
@@ -92,8 +92,7 @@ form * {
 
 button {
   
-  border: #3b3b93;
-  background: #0ca4f5;
+  background: #4d469b;
   font-size: 1.7em;
 }
 
@@ -102,10 +101,10 @@ button {
 
   a {
     font-weight: bold;
-    color: #3b3b93;
+    color: #0ca4f5;
 
     &.router-link-exact-active {
-      color: #0ca4f5;
+      color: #7171c9;
     }
   }
 }
