@@ -33,7 +33,7 @@ const BoardPlugin = {
         failedColor: "red",
         height: "2px",
       });
-      
+
       // Vue.use(VueAxiosPlugin, {
       // });
 
@@ -51,11 +51,11 @@ const BoardPlugin = {
       //       import(/* webpackChunkName: "boards" */ "./views/Boards.vue"),
       //   },
       //   {
-      //     path: "/login",
-      //     name: "Login",
+      //     path: "/auth",
+      //     name: "Auth",
       //     component: () =>
-      //       import(/* webpackChunkName: "login" */ "./views/Login.vue"),
-      //   },
+      //       import(/* webpackChunkName: "auth" */ "./views/Auth.vue"),
+      //   },np
       // ];
 
       Object.keys(components).forEach((name) => {
@@ -66,32 +66,36 @@ const BoardPlugin = {
       options.router.addRoutes(routes);
 
       //TODO: rework this to be more modular with the plugin
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       options.router.beforeEach((to, from, next) => {
+        const status = (options as any).store.state.Boards.User.status;
+
         if (to.meta.allowAnonymous) {
-          next();
+          if (status == UserStatus.LoggedIn && to.name == "Auth") next("/");
+          else next();
           return;
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const status = (options as any).store.state.Boards.User.status;
 
         switch (status) {
           case UserStatus.LoggedIn:
-            if (to.name == "Login") {
+            if (to.name == "Auth") {
               next({ name: "Boards" });
               return;
             }
             next();
             return;
           case UserStatus.LoggedOut:
-            if (to.name == "Login") {
+            if (to.name == "Auth") {
               next();
               return;
             }
-            next({ name: "Login" });
+            next({ name: "Auth" });
             return;
           case UserStatus.LoggingIn:
             options.store.commit("Boards/User/loginFail");
-            next({ name: "Login" });
+            next({ name: "Auth" });
             return;
           default:
             next({ name: "About" });

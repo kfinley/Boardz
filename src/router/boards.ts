@@ -13,10 +13,10 @@ export const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "boards" */ "@/views/Boards.vue"),
   },
   {
-    path: "/login",
-    name: "Login",
+    path: "/auth",
+    name: "Auth",
     meta: { allowAnonymous: true },
     component: () =>
-      import(/* webpackChunkName: "login" */ "@/views/Login.vue"),
+      import(/* webpackChunkName: "auth" */ "@/views/Auth.vue"),
   },
 ];

@@ -14,5 +14,5 @@ import Login from "@/components/Login";
     Login
   }
 })
-export default class Boards extends Vue {}
+export default class Auth extends Vue {}
 </script>

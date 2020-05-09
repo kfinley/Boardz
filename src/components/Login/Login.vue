@@ -6,8 +6,9 @@
       <div class="form-group">
         <label for="username">Username</label>
         <input
-          v-model="username"
-          type="text"
+          ref="username"
+          v-model="username"          
+          type="text"          
           name="username"
           class="form-control"
           :class="{ 'is-invalid': submitted && !username }"
@@ -58,7 +59,10 @@ export default class Login extends Vue {
   password = "";
   submitted = false;
 
-  // created() { }
+  mounted() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (this.$refs.username as any).focus();
+   }
 
   async onSubmit() {
     //const isValid = await this.$refs.validationObserver.validate();
