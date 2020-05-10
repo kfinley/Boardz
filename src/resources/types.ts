@@ -1,6 +1,3 @@
-export interface Board {
-    name: string;
-}
 
 export interface AppUser {
     username: string;
@@ -20,8 +17,7 @@ export interface AuthResponse {
     Success: string;
 }
 
-
-export interface EntitiesResponse {
-    Entities: [];
-    TotalRecortds: number;
+export interface EntityList<T> {
+    Entities: T[];
+    TotalRecords: number;
 }

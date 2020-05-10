@@ -1,9 +1,9 @@
-import { Board } from "@/resources/types";
+import { Board } from "@/resources/entities";
 
 export interface AppState {
-  allBoards: Array<Board>;
+  boards: Array<Board>;
 }
 
 export const state: AppState = {
-  allBoards: [],
+  boards: [],
 };

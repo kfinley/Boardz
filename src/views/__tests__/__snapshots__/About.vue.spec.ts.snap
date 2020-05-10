@@ -2,6 +2,6 @@
 
 exports[`About.vue About View renders 1`] = `
 <div class="about">
-  <h1>This is an about page</h1>
+  <h1>Really simple boards with user stories as cards.</h1>
 </div>
 `;

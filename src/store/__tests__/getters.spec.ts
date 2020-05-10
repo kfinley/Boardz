@@ -3,7 +3,7 @@ import { AppState } from "@/store/state";
 
 // mock State
 const mockState: AppState = {
-  allBoards: [
+  boards: [
     {
       name: "Test Board",
     },
@@ -19,7 +19,7 @@ describe("Getters", () => {
     const result = allBoards(mockState);
 
     // assert
-    expect(result).toEqual(mockState.allBoards);
+    expect(result).toEqual(mockState.boards);
   });
 
 });

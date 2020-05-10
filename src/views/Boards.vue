@@ -22,7 +22,7 @@ const Store = namespace("Boards");
 export default class Boards extends Vue {
   @State("Boards") state!: AppState;
 
-  @Store.Getter boards!: typeof state.allBoards;
+  @Store.Getter boards!: typeof state.boards;
   @Store.Action fetchBoards!: Function;
 
   created() {

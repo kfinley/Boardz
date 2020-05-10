@@ -1,5 +1,7 @@
-import { Config } from "@/config";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { Config } from "@/config";
+import { EntityList } from "./types";
+
 //import axiosCookieJarSupport from "axios-cookiejar-support";
 //import tough from "tough-cookie";
 
@@ -21,7 +23,7 @@ export function authHeader() {
   }
 }
 
-export default {
+export const api = {
   BaseUrl: baseUrl,
   Boards: `${baseUrl}/boards`,
   Login: `${baseUrl}/auth`,
@@ -30,6 +32,14 @@ export default {
 //axiosCookieJarSupport(axios);
 //axios.defaults.withCredentials = true;
 //axios.defaults.jar = cookieJar;
+
+export function urlFromType<T>(type: string): string {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  if (type.endsWith("s")) {
+    throw "Handle plural entity names!";
+  }
+  return `${api.BaseUrl}/${type.toLowerCase()}s`;
+}
 
 export async function request<T>(
   cfg: AxiosRequestConfig
@@ -45,10 +55,19 @@ export async function request<T>(
   return await axios.request(cfg);
 }
 
+export async function getList<T>(type: new () => T) {
+  const url = urlFromType(type.name);
+
+  return await request<EntityList<T>>({
+    url,
+    method: "GET",
+  });
+}
+
 export async function get<T>(url: string) {
   return await request<T>({
     url,
-    method: "GET"
+    method: "GET",
   });
 }
 
@@ -58,6 +77,6 @@ export async function post<T>(url: string, data: any, headers?: {}) {
     url,
     method: "POST",
     data,
-    headers
+    headers,
   });
 }

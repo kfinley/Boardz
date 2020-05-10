@@ -1,5 +1,5 @@
 import { Credentials, AppUser, AuthResponse } from "@/resources/types";
-import Api, { post } from "@/resources/api";
+import { api, post } from "@/resources/api";
 import qs from "querystring";
 import { Config } from "@/config";
 
@@ -10,7 +10,7 @@ export async function authorize(creds: Credentials): Promise<AppUser> {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response = await post<AuthResponse>(Api.Login, data, {
+  const response = await post<AuthResponse>(api.Login, data, {
     // "User-Agent": Config.Agent,
     "Content-Type": "application/x-www-form-urlencoded",
   });

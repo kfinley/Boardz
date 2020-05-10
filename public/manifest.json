@@ -1,10 +1,10 @@
 {
     "name": "Boardz",
     "short_name": "Boardz",
-    "theme_color": "#4DBA87",    
+    "theme_color": "#0ca4f5",    
     "start_url": "/?utm_source=standalone&utm_medium=0.1.0",
     "display": "standalone",
-    "background_color": "#000000",
+    "background_color": "#7171c9",
     "scope": "/",
     "icons": [
       {

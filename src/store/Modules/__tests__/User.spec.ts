@@ -3,7 +3,7 @@ import nock from "nock";
 //import Vue from "vuex";
 import { ActionContext } from "vuex";
 import UserModule, { UserState, UserStatus } from "../User";
-import Api from "@/resources/api";
+import { api } from "@/resources/api";
 import qs from "querystring";
 import { Config } from "@/config";
 
@@ -18,7 +18,7 @@ const mockSuccessReponse = {
 };
 
 nock(
-  Api.BaseUrl
+  api.BaseUrl
   //     , {
   //   reqheaders: {
   //     "user-agent": `${navigator.userAgent} ${Config.Agent}`,
@@ -27,7 +27,7 @@ nock(
 )
   .defaultReplyHeaders({ "access-control-allow-origin": "*" })
   .post(
-    Api.Login.replace(Api.BaseUrl, ""),
+    api.Login.replace(api.BaseUrl, ""),
     qs.stringify({
       Email: validCreds.username,
       Password: validCreds.password,

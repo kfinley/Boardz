@@ -3,7 +3,7 @@ import nock from "nock";
 import { ActionContext } from "vuex";
 import { AppState, state } from "@/store/state";
 
-import Api from "@/resources/api";
+import { api } from "@/resources/api";
 
 const testEntities = [
   {
@@ -25,9 +25,9 @@ describe("fetchBoards", () => {
   const commit = jest.fn();
 
   it("should fetch boards for user and set them in the store", async () => {
-    nock(Api.BaseUrl)
+    nock(api.BaseUrl)
       .defaultReplyHeaders({ "access-control-allow-origin": "*" })
-      .get(Api.Boards.replace(Api.BaseUrl, ""))
+      .get(api.Boards.replace(api.BaseUrl, ""))
       .reply(200, mockBoardsReponse);
 
     const fetchBoards = actions.fetchBoards as Function;
