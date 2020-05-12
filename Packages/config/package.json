@@ -1,0 +1,21 @@
+{
+  "name": "config",
+  "version": "0.1.0",
+  "description": "Config module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "rm -f config-0.1.0.tgz && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kyle Finley",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^13.7.0",
+    "typescript": "^3.7.5"
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "package.json"
+  ]
+}

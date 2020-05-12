@@ -1,0 +1,57 @@
+{
+  "name": "auth-ui",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/auth-ui.common.js",
+  "types": "src/index.ts",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build-prod": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib ./src/index.ts",
+    "test:unit": "vue-cli-service test:unit",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^3.6.4",
+    "vue": "^2.6.11",
+    "vue-class": "^2.0.1",
+    "vue-progressbar": "^0.7.5",
+    "vue-router": "^3.1.6",
+    "vuex": "^3.3.0"
+  },
+  "devDependencies": {
+    "boardz": "../../boardz/",
+    "auth": "../",
+    "@types/jest": "^24.0.19",
+    "@types/node": "^13.7.0",
+    "@types/vue-router": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-eslint": "~4.3.0",
+    "@vue/cli-plugin-router": "~4.3.0",
+    "@vue/cli-plugin-typescript": "~4.3.0",
+    "@vue/cli-plugin-unit-jest": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "@vue/test-utils": "1.0.0-beta.31",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "express": "^4.17.1",
+    "json-schema": "^0.2.5",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "typescript": "~3.8.3",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.1",
+    "vue-template-compiler": "^2.6.11",
+    "vuex-class": "^0.3.2",
+    "vuex-module-decorators": "^0.17.0"
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "README.md",
+    "package.json"
+  ]
+}
