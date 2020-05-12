@@ -1,0 +1,30 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "description": "API module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kyle Finley",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "querystring": "^0.2.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "boardz": "../boardz/",
+    "config": "../config/",
+    "@types/node": "^13.7.0",
+    "@types/socket.io-client": "^1.4.32",
+    "typescript": "^3.8.3"
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "README.md",
+    "package.json"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "name": "boardz-socket-server",
+  "version": "1.0.0",
+  "description": "Boarz.app socket server package",
+  "main": "./dist/index.js",
+  "author": "Kyle Finley",
+  "license": "MIT",
+  "scripts": {
+    "ibs": "./install-packages.sh && npm build && npm start",
+    "start": "nodemon dist/index.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "boardz-server": "file:packages/boardz-server-0.1.0.tgz",
+    "chat": "file:packages/chat-0.1.0.tgz",
+    "cors": "^2.8.5",
+    "express": "4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.2",
+    "@types/cors": "^2.8.6",
+    "@types/node": "^13.7.0",
+    "@types/socket.io": "^2.1.4",
+    "nodemon": "^2.0.3",
+    "ts-node": "8.10.0",
+    "typescript": "^3.7.5",
+    "gulp": "4.0.2",
+    "gulp-livereload": "4.0.2",
+    "gulp-nodemon": "^2.5.0",
+    "gulp-typescript": "3.2.4"
+  },
+  "files": [
+    "dist/*",
+    "src/*",
+    "README.md",
+    "package.json"
+  ]
+}
