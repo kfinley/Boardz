@@ -9,25 +9,25 @@ import router, { Route } from "vue-router";
 import VuexPersist from "vuex-persist";
 import VueProgressBar from "vue-progressbar";
 
-import BoardsModule from "./store/index";
-import { AppState } from "boardz";
-import components from "./components";
 import { routes } from "@/router/boards";
+import BoardzModule from "./store/index";
+import components from "./components";
 
+import { AppState } from "boardz";
 import AuthPlugin from "auth-ui/src/plugin";
 
-export interface BoardsPlugin extends PluginObject<BoardPluginOptions> {
-  install: PluginFunction<BoardPluginOptions>;
+export interface BoardsPlugin extends PluginObject<BoardzPluginOptions> {
+  install: PluginFunction<BoardzPluginOptions>;
 }
 
 // eslint-disable-next-line @typescript-eslint/interface-name-prefix
-export interface BoardPluginOptions {
+export interface BoardzPluginOptions {
   router: router;
   store: Store<AppState>;
 }
 
-const BoardPlugin = {
-  install(vue: typeof Vue, options?: BoardPluginOptions) {
+const plugin = {
+  install(vue: typeof Vue, options?: BoardzPluginOptions) {
     if (options !== undefined && options.router && options.store) {
 
       vue.use(VueProgressBar, {
@@ -48,7 +48,9 @@ const BoardPlugin = {
       
       options.router.addRoutes(routes);
       
-      options.store.registerModule("Boards", BoardsModule);
+      options.store.registerModule("Boards", BoardzModule);
+
+      options.store.dispatch("Boards/setupSockets");
 
       const vuexLocalStorage = new VuexPersist({
         key: "boardz", // The key to store the state on in the storage provider.
@@ -114,4 +116,4 @@ const BoardPlugin = {
   },
 };
 
-export default BoardPlugin as BoardsPlugin;
+export default plugin as BoardsPlugin;

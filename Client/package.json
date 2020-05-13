@@ -12,13 +12,13 @@
     "clean": "cd ../Packages && find . -name '*.tgz' -delete && cd ../Client"
   },
   "dependencies": {
-    "api": "file:packages/api-0.1.0.tgz",
-    "auth": "file:packages/auth-0.1.0.tgz",
-    "auth-ui": "file:packages/auth-ui-0.1.0.tgz",
+    "api": "file:../Packages/dist/api-0.1.0.tgz",
+    "auth": "file:../Packages/dist/auth-0.1.0.tgz",
+    "auth-ui": "file:../Packages/dist/auth-ui-0.1.0.tgz",
+    "boardz": "file:../Packages/dist/boardz-0.1.0.tgz",
+    "config": "file:../Packages/dist/config-0.1.0.tgz",
     "axios": "^0.19.2",
-    "boardz": "file:packages/boardz-0.1.0.tgz",
     "bootstrap-vue": "^2.13.0",
-    "config": "file:packages/config-0.1.0.tgz",
     "core-js": "^3.6.4",
     "moment": "^2.24.0",
     "qs": "^6.9.4",

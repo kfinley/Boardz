@@ -5,7 +5,7 @@ import { mutations } from "./mutations";
 import { state, AppState } from "boardz";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const LeanBoardModule: Module<AppState, any> = {
+const BoardzModule: Module<AppState, any> = {
   namespaced: true,
   state,
   getters,
@@ -13,5 +13,5 @@ const LeanBoardModule: Module<AppState, any> = {
   mutations
 };
 
-export default LeanBoardModule;
+export default BoardzModule;
 

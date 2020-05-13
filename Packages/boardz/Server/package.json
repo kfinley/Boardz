@@ -2,18 +2,22 @@
   "name": "boardz-server",
   "version": "0.1.0",
   "description": "Boardz.app socket server package",
+  "private": true,
   "author": "Kyle Finley",
+  "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -f boardz-server-0.1.0.tgz tsc",
     "build-pack": "npm run build && npm pack",
-    "bpc": "npm run build-pack && cp boardz-server-0.1.0.tgz ../../../Server/packages/boardz-server-0.1.0.tgz"
+    "bpc": "npm run build-pack && cp boardz-server-0.1.0.tgz ../../dist/boardz-server-0.1.0.tgz"
   },
   "dependencies": {
     "express": "4.17.1",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
+    "api": "file:../../dist/api-0.1.0.tgz",
+    "boardz": "file:../../dist/boardz-0.1.0.tgz",
     "@types/express": "4.17.2",
     "@types/node": "^13.7.0",
     "@types/socket.io": "^2.1.4",

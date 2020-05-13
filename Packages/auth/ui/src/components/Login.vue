@@ -39,10 +39,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+//import Vue from "vue";
 import { namespace, State } from "vuex-class";
 import { UserState, UserStatus } from "boardz";
-import { Component, Watch } from "vue-property-decorator";
+import { Component, Watch, Vue } from "vue-property-decorator";
 
 const Store = namespace("Auth");
 
@@ -56,6 +56,9 @@ export default class Login extends Vue {
   password = "";
   submitted = false;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  $Progress: any;
+  
   mounted() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (this.$refs.username as any).focus();

@@ -12,17 +12,23 @@
 <script lang="ts">
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Vue from "vue";
-import { namespace } from "vuex-class";
+import { namespace, State } from "vuex-class";
 import { AppState } from "boardz/dist/state/App";
-import { UserStatus } from "auth/dist/store/UserModule";
+import { UserStatus } from "auth";
+import { UserState } from "auth";
 
 const Store = namespace("Boards");
 
 export default class App extends Vue {
+  @State("Auth") userState!: UserState;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   @Store.Action fetchBoards: any;
+  @Store.Action setupSockets: any;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   $Progress: any;
+  
   appHeight = () =>
     document.documentElement.style.setProperty(
       "--app-height",
@@ -30,10 +36,11 @@ export default class App extends Vue {
     );
 
   created() {
-    this.load();
+    this.setupSockets();    
   }
 
   mounted() {
+    this.load();
     this.showInstallMessage();
     window.addEventListener("resize", this.appHeight);
     this.appHeight();
@@ -41,7 +48,9 @@ export default class App extends Vue {
 
   async load() {
     this.$Progress.start();
-    if (this.$store.state.Boards.User.status == UserStatus.LoggedIn)
+    console.log(this.userState.status);
+    if (this.userState.status == UserStatus.LoggedIn)
+      
       await this.fetchBoards();
     this.$Progress.finish();
   }

@@ -2,9 +2,12 @@
   "name": "api",
   "version": "0.1.0",
   "description": "API module",
+  "private": true,
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -f api-0.1.0.tgz && tsc",
+    "build-pack": "npm run build && npm pack",
+    "bpc": "npm run build-pack && cp api-0.1.0.tgz ../dist/api-0.1.0.tgz",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kyle Finley",
@@ -15,8 +18,8 @@
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
-    "boardz": "../boardz/",
-    "config": "../config/",
+    "boardz": "file:../dist/boardz-0.1.0.tgz",
+    "config": "file:../dist/config-0.1.0.tgz",
     "@types/node": "^13.7.0",
     "@types/socket.io-client": "^1.4.32",
     "typescript": "^3.8.3"

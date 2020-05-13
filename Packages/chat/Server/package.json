@@ -2,12 +2,13 @@
   "name": "chat",
   "version": "0.1.0",
   "description": "Chat module",
+  "private": true,
   "author": "Kyle Finley",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -f chat-0.1.0.tgz && tsc",
     "build-pack": "npm run build && npm pack",
-    "bpc": "npm run build-pack && cp chat-0.1.0.tgz ../../../Server/packages/chat-0.1.0.tgz"
+    "bpc": "npm run build-pack && cp chat-0.1.0.tgz ../../dist/chat-0.1.0.tgz"
   },
   "dependencies": {
     "express": "4.17.1",
