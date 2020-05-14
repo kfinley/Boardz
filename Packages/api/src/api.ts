@@ -14,20 +14,35 @@ const protocol = `${
 
 const baseUrl = `${protocol}${Config.Api}`;
 
-//export const cookieJar = new tough.CookieJar();
-export function authToken() : string | null{
-  const token = localStorage.getItem(`${Config.Agent}:access_token`);
-  return token;
-}
-
-export function authHeader() {
-  const token = authToken();
-  if (token) {
-    return { Authorization: "Bearer " + token };
-  } else {
-    return {};
+export const authHelper = {
+  authToken: () => {
+    const token = localStorage.getItem(`${Config.Agent}:access_token`);
+    return token;
+  },
+  authHeader: () => {
+    const token = authHelper.authToken();
+    if (token) {
+      return { Authorization: "Bearer " + token };
+    } else {
+      return {};
+    }
   }
 }
+
+//export const cookieJar = new tough.CookieJar();
+// export function authToken() : string | null{
+//   const token = localStorage.getItem(`${Config.Agent}:access_token`);
+//   return token;
+// }
+
+// export function authHeader() {
+//   const token = authToken();
+//   if (token) {
+//     return { Authorization: "Bearer " + token };
+//   } else {
+//     return {};
+//   }
+// }
 
 export const api = {
   BaseUrl: baseUrl,
@@ -53,7 +68,7 @@ export async function request<T>(
   // await get Access Token from store
   // Build up config
 
-  cfg.headers = { ...cfg.headers, ...authHeader() };
+  cfg.headers = { ...cfg.headers, ...authHelper.authHeader() };
   //cfg.headers["user-agent"] = `${navigator.userAgent} ${Config.Agent}`;
 
   //console.log(cfg);

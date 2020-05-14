@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { authToken } from './api';
+//import { authHelper } from './api';
 
 //TODO: config this...
 const SERVER_URL = "http://localhost:8085";

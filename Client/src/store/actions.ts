@@ -1,6 +1,6 @@
 import { ActionTree } from "vuex";
 import { AppState, Board } from "boardz";
-import { Socket, authToken } from "api";
+import { Socket, authHelper } from "api";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const actions: ActionTree<AppState, any> = {
@@ -8,7 +8,7 @@ export const actions: ActionTree<AppState, any> = {
   async fetchBoards({ commit, dispatch }) {
     try {
       console.log("fetching boards");
-      Socket.emit("authenticate", authToken())
+      Socket.emit("authenticate", authHelper.authToken())
       Socket.emit("get-boards");
       console.log("done");
     } catch (e) {
