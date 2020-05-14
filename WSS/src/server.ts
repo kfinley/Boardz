@@ -2,8 +2,8 @@ import express from 'express';
 import cors from "cors";
 import * as http from "http";
 
-import ChatServer from 'chat/dist';
-import BoardzServer from 'boardz-server/dist';
+import { ChatServer } from "./chat";
+import { BoardzServer } from './boardz';
 
 export class SocketServer {
   public static readonly PORT:number = 8085;

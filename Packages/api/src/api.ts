@@ -1,6 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { Config } from "config";
 import { EntityList } from "boardz";
+import { createLocalStorage } from "localstorage-ponyfill";
+
+const localStorage = createLocalStorage();
 
 //import axiosCookieJarSupport from "axios-cookiejar-support";
 //import tough from "tough-cookie";
@@ -12,10 +15,13 @@ const protocol = `${
 const baseUrl = `${protocol}${Config.Api}`;
 
 //export const cookieJar = new tough.CookieJar();
+export function authToken() : string | null{
+  const token = localStorage.getItem(`${Config.Agent}:access_token`);
+  return token;
+}
 
 export function authHeader() {
-  const token = localStorage.getItem(`${Config.Agent}:access_token`);
-
+  const token = authToken();
   if (token) {
     return { Authorization: "Bearer " + token };
   } else {

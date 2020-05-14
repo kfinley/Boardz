@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
-import { authorize } from "../commands/auth";
+import { authorize } from "../commands/authorize";
 import { Credentials } from "../types";
 import { Socket } from "api";
 import { AppUser } from "boardz";
