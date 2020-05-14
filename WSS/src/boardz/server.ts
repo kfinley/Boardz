@@ -23,7 +23,7 @@ export default class BoardzServer {
     this.io.on("connect", (socket: SocketIO.Socket) => {
       console.log("Boardz: Client connected");
 
-      socket.on("authenticate", (token: string) => {
+      socket.on("authorize", (token: string) => {
         authHelper.authToken = () => {
           return token;
         };

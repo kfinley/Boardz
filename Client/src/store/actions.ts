@@ -8,7 +8,7 @@ export const actions: ActionTree<AppState, any> = {
   async fetchBoards({ commit, dispatch }) {
     try {
       console.log("fetching boards");
-      Socket.emit("authenticate", authHelper.authToken())
+      Socket.emit("authorize", authHelper.authToken())
       Socket.emit("get-boards");
       console.log("done");
     } catch (e) {
