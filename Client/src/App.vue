@@ -49,9 +49,10 @@ export default class App extends Vue {
   async load() {
     this.$Progress.start();
     console.log(this.userState.status);
-    if (this.userState.status == UserStatus.LoggedIn)
-      
+    if (this.userState.status == UserStatus.LoggedIn) {
       await this.fetchBoards();
+    }
+      
     this.$Progress.finish();
   }
 

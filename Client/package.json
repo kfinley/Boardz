@@ -3,13 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "install-components": "./install-components.sh",
+    "install-packages": "npm install --no-package-lock --prefer-offline",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "full-build": "npm run clean && npn run install-components && npm run build",
+    "full-build": "npn run install-components && npm run build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint",
-    "clean": "cd ../Packages && find . -name '*.tgz' -delete && cd ../Client"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "api": "file:../Packages/dist/api-0.1.0.tgz",

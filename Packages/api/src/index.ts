@@ -1,2 +1,2 @@
-export { Socket } from "./socket";
+export * from "./socket";
 export * from './api';

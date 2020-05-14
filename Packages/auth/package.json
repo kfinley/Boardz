@@ -9,7 +9,8 @@
   "scripts": {
     "build": "rm -f auth-0.1.0.tgz && tsc",
     "build-pack": "npm run build && npm pack",
-    "bpc": "npm run build-pack && cp auth-0.1.0.tgz ../dist/auth-0.1.0.tgz",
+    "install-packages": "npm install --no-package-lock --prefer-offline",
+    "bpc": "npm run install-packages && npm run build-pack && cp auth-0.1.0.tgz ../dist/auth-0.1.0.tgz",
     "webpack": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

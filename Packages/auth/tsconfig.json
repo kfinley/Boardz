@@ -9,41 +9,17 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "strictPropertyInitialization": false,
     "noLib": false,
     "preserveConstEnums": true,
-    "declaration": true,    
+    "declaration": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env",
-      "jest",
-      "node"
-    ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "es5",
-      "scripthost"
-    ]
+    "types": ["webpack-env", "jest", "node"],
+    "lib": ["esnext", "dom", "dom.iterable", "es5", "scripthost"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "ui"
-  ]
+  "exclude": ["node_modules", "dist", "ui"]
 }

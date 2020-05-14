@@ -9,7 +9,8 @@
     "build-prod": "vue-cli-service build",
     "build": "rm -f auth-ui-0.1.0.tgz && vue-cli-service build --target lib ./src/index.ts",
     "build-pack": "npm run build && npm pack",
-    "bpc": "npm run build-pack && cp auth-ui-0.1.0.tgz ../../dist/auth-ui-0.1.0.tgz",
+    "install-packages": "npm install --no-package-lock --prefer-offline",
+    "bpc": "npm run install-packages && npm run build-pack && cp auth-ui-0.1.0.tgz ../../dist/auth-ui-0.1.0.tgz",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },

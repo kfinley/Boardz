@@ -7,7 +7,8 @@
   "scripts": {
     "build": "rm -f boardz-0.1.0.tgz && tsc",
     "build-pack": "npm run build && npm pack",
-    "bpc": "npm run build-pack && cp boardz-0.1.0.tgz ../dist/boardz-0.1.0.tgz",
+    "install-packages": "npm install --no-package-lock --prefer-offline",
+    "bpc": "npm run install-packages && npm run build-pack && cp boardz-0.1.0.tgz ../dist/boardz-0.1.0.tgz",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kyle Finley",
