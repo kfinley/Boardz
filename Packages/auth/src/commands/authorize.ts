@@ -5,7 +5,7 @@ import { AppUser } from "boardz";
 import { api, post } from "api";
 import { createLocalStorage } from "localstorage-ponyfill";
 
-const localStorage = createLocalStorage({ mode : "browser" });
+const localStorage = createLocalStorage();
 
 export async function authorize(creds: Credentials): Promise<AppUser> {
   const data = qs.stringify({

@@ -1,7 +1,7 @@
 
 <template>
   <div>
-    <h2>Boardz Login</h2>
+    <h2>{{ state.appName }} Login</h2>
     <form id="form" @submit.prevent="onSubmit">
       <div class="form-group">
         <label for="username">Username</label>
@@ -41,17 +41,18 @@
 <script lang="ts">
 //import Vue from "vue";
 import { namespace, State } from "vuex-class";
-import { UserState, UserStatus } from "boardz";
+import AuthState from "../store/state";
+import { AuthStatus } from "auth";
 import { Component, Watch, Vue } from "vue-property-decorator";
 
 const Store = namespace("Auth");
 
 @Component
 export default class Login extends Vue {
-  @State("Auth") state!: UserState;
+  @State("Auth") state!: AuthState;
 
   @Store.Action login!: Function;
-
+  
   username = "";
   password = "";
   submitted = false;
@@ -78,9 +79,9 @@ export default class Login extends Vue {
 
   @Watch("state.status")
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onLoggedIn(newValue: UserStatus, oldValue: UserStatus) {
+  onLoggedIn(newValue: AuthStatus, oldValue: AuthStatus) {
     
-    if (newValue === UserStatus.LoggedIn) {
+    if (newValue === AuthStatus.LoggedIn) {
       if (this.$route.query && this.$route.query.returnUrl) {
         this.$router.push(this.$route.query.returnUrl as string);
       } else {
@@ -91,8 +92,8 @@ export default class Login extends Vue {
 
   get disabled() {
     const status = this.state.status;
-    return status === UserStatus.LoggingIn ||
-          status === UserStatus.LoggedIn;
+    return status === AuthStatus.LoggingIn ||
+          status === AuthStatus.LoggedIn;
   }
 }
 </script>

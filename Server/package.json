@@ -7,6 +7,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "serve": "gulp build && gulp serve",
     "install-packages": "npm install --no-package-lock --prefer-offline",
     "ibs": "./install-packages.sh && npm build && npm start",
     "start": "nodemon dist/index.js",
@@ -29,6 +30,7 @@
     "api": "file:../Packages/dist/api-0.1.0.tgz",
     "boardz": "file:../Packages/dist/boardz-0.1.0.tgz",
     "config": "file:../Packages/dist/config-0.1.0.tgz",
+    "auth": "file:../Packages/dist/auth-0.1.0.tgz",
     "cors": "^2.8.5",
     "express": "4.17.1",
     "socket.io": "^2.3.0"

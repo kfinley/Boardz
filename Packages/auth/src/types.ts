@@ -1,4 +1,13 @@
-export interface Credentials {
+export enum AuthStatus {
+    LoggedOut = "LoggedOut",
+    LoggingIn = "LoggingIn",
+    LoggedIn = "LoggedIn",
+    LoginFailed = "LoginFailed",
+    Registering = "Registering",
+    Locked = "Locked",
+  }
+  
+  export interface Credentials {
     username: string;
     password: string;
     // authUrl?: string;

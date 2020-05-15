@@ -3,91 +3,104 @@ import VueProgressBar from "vue-progressbar";
 import router, { Route } from "vue-router";
 import { Store } from "vuex";
 
-import { AppState } from "boardz";
-import { UserStatus, AuthModule } from "auth/src/store";
-
+import { AuthStatus } from "auth";
+import AuthModule from "./store";
 import pluginRoutes from "./router/pluginRoutes";
 import components from "./components";
+import { configureListeners } from "auth";
 
 export interface AuthPlugin extends PluginObject<AuthPluginOptions> {
   install: PluginFunction<AuthPluginOptions>;
 }
 
 export interface AuthPluginOptions {
+  appName: string;
   router: router;
-  store: Store<AppState>;
+  store: Store<any>;
+  redirectRoute: string;
 }
 
 const AuthPlugin = {
-    install(vue: typeof Vue, options?: AuthPluginOptions) {
-        if (options !== undefined && options.router && options.store) {
-          
-          vue.use(VueProgressBar, {
-            color: "green",
-            failedColor: "red",
-            height: "2px",
-          });
-    
-          Object.keys(components).forEach((name) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            Vue.component(name, (components as any)[name]);
-          });
+  install(vue: typeof Vue, options?: AuthPluginOptions) {
+    if (options !== undefined && options.router && options.store) {
 
-          options.router.addRoutes(pluginRoutes);
+      options.redirectRoute = options.redirectRoute ?? "Home";      
+      options.appName = options.appName ?? options.store.state.appName ?? options.store.state.appName;
+      vue.use(VueProgressBar, {
+        color: "green",
+        failedColor: "red",
+        height: "2px",
+      });
 
-          options.router.beforeEach((to, from, next) => {
-            const status = (options as any).store.state.Auth.status;
-    
-            if (to.meta.allowAnonymous) {
-              if (status == UserStatus.LoggedIn && to.name == "Auth") next("/");
-              else next();
+      Object.keys(components).forEach((name) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        Vue.component(name, (components as any)[name]);
+      });
+
+      // register Auth store module
+      options.store.registerModule("Auth", AuthModule);
+
+      if (options.appName) {
+        options.store.commit("Auth/setAppName", options.appName);
+      }
+
+      configureListeners(options.store.commit);
+      
+      options.router.addRoutes(pluginRoutes);
+      
+      options.router.beforeEach((to, from, next) => {
+
+        if (to.meta.allowAnonymous) {
+          if (
+            options.store.state.Auth.status == AuthStatus.LoggedIn &&
+            to.name == "Auth"
+          )
+            next("/");
+          else next();
+          return;
+        }
+
+        switch (options.store.state.Auth.status) {
+          case AuthStatus.LoggingIn:
+            options.store.commit("Auth/logout");
+            next({ name: "Auth" });
+            return;
+          case AuthStatus.LoggedIn:
+            if (to.name == "Auth") {              
+              next({ name: options.redirectRoute });
               return;
             }
-    
-            switch (status) {
-              case UserStatus.LoggedIn:
-                if (to.name == "Auth") {
-                  next({ name: "Boards" });
-                  return;
-                }
-                next();
-                return;
-              case UserStatus.LoggedOut:
-                if (to.name == "Auth") {
-                  next();
-                  return;
-                }
-                next({ name: "Auth" });
-                return;
-              case UserStatus.LoggingIn:
-                options.store.commit("Auth/loginFail");
-                next({ name: "Auth" });
-                return;
-              default:
-                next({ name: "About" });
-                return;
-            }
-          });
-
-          // register Auth store module
-          options.store.registerModule("Auth", AuthModule);
-    
-          const waitForStorageToBeReady = async (
-            to: Route,
-            from: Route,
-            next: Function
-          ) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            await (options as any).store.restored;
-            // window.console.log(options.store.state);
-            // window.console.log("state restored");
             next();
-          };
-    
-          options.router.beforeEach(waitForStorageToBeReady);
+            return;
+          case AuthStatus.LoggedOut:
+            if (to.name == "Auth") {
+              next();
+              return;
+            }
+            next({ name: "Auth" });
+            return;          
+          default:
+            next({ name: "About" });
+            return;
         }
-    },
-};
+      });
 
+      const waitForStorageToBeReady = async (
+        to: Route,
+        from: Route,
+        next: Function
+      ) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (options.store as any).restored;
+        options.store.dispatch("Auth/authorize");  
+        // window.console.log(options.store.state);
+        //window.console.log("state restored");
+        next();
+      };
+
+      options.router.beforeEach(waitForStorageToBeReady);
+    }
+  },
+};
 
 export default AuthPlugin as AuthPlugin;
