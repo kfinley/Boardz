@@ -1,14 +1,18 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import App from "./App.vue";
-import AuthPlugin from './Plugin';
+import AuthPlugin from './plugin';
 import router from './router'
 
 Vue.config.productionTip = false;
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({});
+const store = new Vuex.Store({
+  state: {
+    appName: "Auth"
+  }
+});
 
 Vue.use(AuthPlugin, {
   router,

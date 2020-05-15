@@ -19,18 +19,17 @@ const mockBoardsReponse = {
   TotalRecords: 2,
 };
 
-describe("fetchBoards", () => {
-  //const endpoint = "/boards";
+describe("setupSockets", () => {
 
   const commit = jest.fn();
 
-  it("should fetch boards for user and set them in the store", async () => {
+  it("should setupSockets", async () => {
     nock(api.BaseUrl)
       .defaultReplyHeaders({ "access-control-allow-origin": "*" })
       .get(api.Boards.replace(api.BaseUrl, ""))
       .reply(200, mockBoardsReponse);
 
-    const fetchBoards = actions.fetchBoards as Function;
+    const setupSockets = actions.setupSockets as Function;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const actionContext: ActionContext<AppState, any> = {
@@ -42,8 +41,8 @@ describe("fetchBoards", () => {
       rootGetters: {},
     };
 
-    await fetchBoards(actionContext, { commit });
+    await setupSockets(actionContext, { commit });
 
-    expect(commit).toHaveBeenCalledWith("setBoards", testEntities );
+    expect(commit).toHaveBeenCalledWith("setSocketsSetup");
   });
 });

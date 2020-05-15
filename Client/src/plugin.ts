@@ -14,7 +14,7 @@ import BoardzModule from "./store/index";
 import components from "./components";
 
 import { AppState } from "boardz";
-import AuthPlugin from "auth-ui/src/plugin";
+import AuthPlugin from "auth-ui/src";
 
 export interface BoardsPlugin extends PluginObject<BoardzPluginOptions> {
   install: PluginFunction<BoardzPluginOptions>;

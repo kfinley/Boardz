@@ -3,6 +3,7 @@ import { AppState } from "boardz";
 
 // mock State
 const mockState: AppState = {
+  socketsSetup: false,
   boards: [
     {
       name: "Test Board",
@@ -11,7 +12,7 @@ const mockState: AppState = {
 };
 
 describe("Getters", () => {
-  it("allBoards: returns allBoards", () => {
+  it("boards: returns Board[]", () => {
     // arrange
     const allBoards = getters.boards as Function;
 

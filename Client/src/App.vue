@@ -14,18 +14,10 @@
 import Vue from "vue";
 import { namespace, State } from "vuex-class";
 import { AppState } from "boardz/dist/state/App";
-import { UserStatus } from "auth";
-import { UserState } from "auth";
 
 const Store = namespace("Boards");
 
 export default class App extends Vue {
-  @State("Auth") userState!: UserState;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Store.Action fetchBoards: any;
-  @Store.Action setupSockets: any;
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   $Progress: any;
   
@@ -33,29 +25,15 @@ export default class App extends Vue {
     document.documentElement.style.setProperty(
       "--app-height",
       `${window.innerHeight}px`
-    );
-
-  created() {
-    this.setupSockets();    
-  }
+     );
 
   mounted() {
-    this.load();
     this.showInstallMessage();
     window.addEventListener("resize", this.appHeight);
     this.appHeight();
   }
 
-  async load() {
-    this.$Progress.start();
-    console.log(this.userState.status);
-    if (this.userState.status == UserStatus.LoggedIn) {
-      await this.fetchBoards();
-    }
-      
-    this.$Progress.finish();
-  }
-
+  //TODO: move this out to it's own module
   showInstallMessage() {
     // Detects if device is on iOS
     const isIos = () => {

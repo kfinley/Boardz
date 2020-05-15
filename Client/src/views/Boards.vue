@@ -24,18 +24,6 @@ export default class Boards extends Vue {
   @State("Boards") state!: AppState;
 
   @Store.Getter boards!: typeof state.boards;
-  @Store.Action fetchBoards!: Function;
 
-  created() {
-    this.load().then(() => {
-      return;
-    });
-  }
-
-  async load() {
-    this.$Progress.start();
-    await this.fetchBoards();
-    this.$Progress.finish();
-  }
 }
 </script>
