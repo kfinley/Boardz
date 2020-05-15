@@ -40,7 +40,7 @@ export default class BoardzServer {
                 return (socket as any).token;
               };
 
-              //TODO: bust these out to commands... Duped below
+              //TODO: bust these out to commands..
               const get = getList<Board>(Board)
                 .then((get) => {
                   console.log(get.data);
