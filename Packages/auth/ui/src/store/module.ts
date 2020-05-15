@@ -65,12 +65,11 @@ export default class AuthModule extends VuexModule implements AuthState {
   @Action
   authorize() {
     try {
-      if ((this.context.state as any).Auth.status == AuthStatus.LoggingIn) {
-        this.context.commit("Auth/logout");
+      if ((this.context as any).state.status == AuthStatus.LoggingIn) {
+        this.context.commit("logout");
       }
 
       if (authHelper.authToken()) {
-        this.context.commit("authorized");
         Socket.emit("Auth/authorize", authHelper.authToken());
       }
     } catch (e) {

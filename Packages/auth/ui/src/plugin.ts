@@ -3,11 +3,10 @@ import VueProgressBar from "vue-progressbar";
 import router, { Route } from "vue-router";
 import { Store } from "vuex";
 
-import { AuthStatus } from "auth";
+import { AuthStatus, configureListeners } from "auth";
 import AuthModule from "./store";
 import pluginRoutes from "./router/pluginRoutes";
 import components from "./components";
-import { configureListeners } from "auth";
 
 export interface AuthPlugin extends PluginObject<AuthPluginOptions> {
   install: PluginFunction<AuthPluginOptions>;
