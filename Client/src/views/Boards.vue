@@ -14,8 +14,7 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { namespace, State } from "vuex-class";
-import { AppState } from "boardz/dist/state/App";
-import { state } from "boardz/dist/state/App";
+import { AppState, Board } from "boardz";
 
 const Store = namespace("Boards");
 
@@ -23,7 +22,7 @@ const Store = namespace("Boards");
 export default class Boards extends Vue {
   @State("Boards") state!: AppState;
 
-  @Store.Getter boards!: typeof state.boards;
+  @Store.Getter boards!: Board[];
 
 }
 </script>

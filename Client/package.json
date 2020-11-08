@@ -6,7 +6,7 @@
     "install-packages": "npm install --no-package-lock --prefer-offline",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "full-build": "npn run install-components && npm run build",
+    "full-build": "npm run install-packages && npm run build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
