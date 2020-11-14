@@ -11,7 +11,7 @@ import AuthState from "./state";
 Vue.use(Vuex);
 const store = new Vuex.Store({});
 
-@Module({ namespaced: true, store: store, name: "Auth" })
+@Module({ dynamic: true, namespaced: true, store: store, name: "Auth" })
 export default class AuthModule extends VuexModule implements AuthState {
   appName = (store.state as any).appName;
   status = AuthStatus.LoggedOut;

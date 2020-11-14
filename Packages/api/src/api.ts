@@ -54,7 +54,7 @@ export const api = {
 //axios.defaults.withCredentials = true;
 //axios.defaults.jar = cookieJar;
 
-export function urlFromType<T>(type: string): string {
+export function urlFromType(type: string): string {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   if (type.endsWith("s")) {
     throw "Handle plural entity names!";
@@ -75,6 +75,22 @@ export async function request<T>(
   //console.log(document.cookie);
   return await axios.request(cfg);
 }
+
+export async function save(typeName: string, entity: any) {
+  console.log(typeName);
+  const url = urlFromType(typeName);
+  
+  return await post(url, entity);
+};
+
+export async function getEntities(type: string) {
+  const url = urlFromType(type);
+
+  return await request({
+    url,
+    method: "GET"
+  });
+};
 
 export async function getList<T>(type: new () => T) {
   const url = urlFromType(type.name);

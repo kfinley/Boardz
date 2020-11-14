@@ -1,11 +1,21 @@
 
 <template>
   <div>
-    <h1>My Boards</h1>
-    <div v-if="boards">
+    <h1>All Boards</h1>
+    <div v-if="entities['boards']">
       <ul>
-        <li v-for="(board) in boards" :key="board.name">{{ board.name }}</li>
+        <li v-for="board in entities['boards']" :key="board.Id">
+          {{ board.Name }}
+        </li>
       </ul>
+    </div>
+    <div class="form-group">
+      <button
+        class="btn btn-primary"
+        @click="$router.push({ name: 'AddBoard' })"
+      >
+        Add
+      </button>
     </div>
   </div>
 </template>
@@ -13,16 +23,21 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { namespace, State } from "vuex-class";
-import { AppState, Board } from "boardz";
+import { namespace } from "vuex-class";
+import { Board } from "boardz";
 
-const Store = namespace("Boards");
+const Entity = namespace("Entity");
 
 @Component({})
 export default class Boards extends Vue {
-  @State("Boards") state!: AppState;
+  @Entity.State("entities")
+  entities!: {};
 
-  @Store.Getter boards!: Board[];
+  @Entity.Action
+  refresh!: Function;
 
+  created() {
+    this.refresh(Board);
+  }
 }
 </script>

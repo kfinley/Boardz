@@ -19,7 +19,7 @@ export interface AuthPluginOptions {
   redirectRoute: string;
 }
 
-const AuthPlugin = {
+const plugin = {
   install(vue: typeof Vue, options?: AuthPluginOptions) {
     if (options !== undefined && options.router && options.store) {
 
@@ -102,4 +102,4 @@ const AuthPlugin = {
   },
 };
 
-export default AuthPlugin as AuthPlugin;
+export default plugin as AuthPlugin;
