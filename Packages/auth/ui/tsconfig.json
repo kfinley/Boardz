@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ES2015",
+    "module": "commonjs",
+    "outDir": "./dist",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -18,14 +19,14 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "lib": [
+        "esnext",
+        "dom",
+        "dom.iterable",
+        "scripthost"
       ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    }
   },
   "include": [
     "src/**/*.ts",
@@ -35,6 +36,7 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }

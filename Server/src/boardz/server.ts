@@ -1,5 +1,5 @@
 import * as http from "http";
-import { getList, authHelper, api, urlFromType } from "api";
+import { getList, authHelper, api, save, getEntities } from "api";
 import { Board } from "boardz";
 import { Config } from "config";
 import { authenticate } from "auth";
@@ -40,15 +40,6 @@ export default class BoardzServer {
                 return (socket as any).token;
               };
 
-              //TODO: bust these out to commands..
-              const get = getList<Board>(Board)
-                .then((get) => {
-                  console.log(get.data);
-                  socket.emit("boards", get.data.Entities);
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
             } else {
               socket.emit("Auth/failed");
             }
@@ -65,16 +56,28 @@ export default class BoardzServer {
         authHelper.authToken = () => {
           return (socket as any).token;
         };
-
       });
 
-      socket.on("get-boards", () => {
-        console.log(`${socket.id}: get-boards`);
-
-        const response = getList<Board>(Board)
-          .then((response) => {
+      socket.on("Entity/save", (name, entity) => {
+        console.log(`${socket.id}: Entity/save`);
+        console.log(name);
+        console.log(entity);
+        const response = save(name, entity)
+          .then((response: { data: any }) => {
             console.log(response.data);
-            socket.emit("boards", response.data.Entities);
+            socket.emit("Entity/saved", response.data);
+          })
+          .catch((e: any) => {
+            console.log(e);
+          });
+      });
+
+      socket.on("Entity/getAll", (name: string) => {
+        
+        const response = getEntities(name)
+          .then((get) => {
+            console.log(`Entity/${name}s, ${JSON.stringify(get.data)}`);
+            socket.emit(`Entity/${name}s`, get.data);
           })
           .catch((e) => {
             console.log(e);

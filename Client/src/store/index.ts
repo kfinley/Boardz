@@ -7,11 +7,10 @@ import { AppState } from "boardz";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ClientModule: Module<AppState, any> = {
   namespaced: true,
-  //state,
+  state: AppState,
   getters,
   actions,
   mutations,
 };
 
 export default ClientModule;
-

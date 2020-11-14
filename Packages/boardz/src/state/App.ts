@@ -1,11 +1,11 @@
-import { Board } from "../entities";
+import EntityModule from "../store/entity";
 
 export interface AppState {
-  boards: Board[];
+  appName: string;
   socketsSetup: boolean;
 }
 
-export const state: AppState = {
-  boards: [],
-  socketsSetup: false
+export const AppState: AppState = {
+  appName: "",
+  socketsSetup: false,
 };

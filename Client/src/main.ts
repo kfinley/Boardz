@@ -6,6 +6,7 @@ import VueRouter from "vue-router";
 import router from "./router";
 import BoardsPlugin from './plugin';
 import store  from '@/store/root';
+import { Socket } from 'api';
 
 Vue.config.productionTip = false;
 
@@ -14,7 +15,8 @@ Vue.use(VueRouter);
 
 Vue.use(BoardsPlugin, {
   router,
-  store
+  store,
+  socket: Socket
 });
 
 new Vue({

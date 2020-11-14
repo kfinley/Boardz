@@ -1,9 +1,15 @@
 import { actions } from "../actions";
 import nock from "nock";
 import { ActionContext } from "vuex";
-import { AppState, state } from "boardz";
+import { AppState } from "boardz";
 
 import { api } from "api";
+
+// mock State
+const mockState: AppState = {
+  appName: 'test',
+  socketsSetup: false  
+};
 
 const testEntities = [
   {
@@ -35,7 +41,7 @@ describe("setupSockets", () => {
     const actionContext: ActionContext<AppState, any> = {
       dispatch: jest.fn(),
       commit: commit,
-      state: state, // here goes your auth state mock
+      state: mockState, // here goes your auth state mock
       getters: {},
       rootState: {}, // here goes your root state mock
       rootGetters: {},

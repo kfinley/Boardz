@@ -10,30 +10,44 @@ import VuexPersist from "vuex-persist";
 import VueProgressBar from "vue-progressbar";
 
 import { routes } from "@/router/boards";
-import BoardzModule from "./store/index";
+import ClientModule from "./store/index";
 import components from "./components";
 
 import { AppState } from "boardz";
 import AuthPlugin from "auth-ui/src";
+import BoardzPlugin from "boardz";
+import AuthState from "auth-ui/src/store/state";
+import EntityState from "boardz/dist/state/entity";
 
-export interface BoardsPlugin extends PluginObject<BoardzPluginOptions> {
-  install: PluginFunction<BoardzPluginOptions>;
+export interface ClientPlugin extends PluginObject<ClientPluginOptions> {
+  install: PluginFunction<ClientPluginOptions>;
 }
 
 // eslint-disable-next-line @typescript-eslint/interface-name-prefix
-export interface BoardzPluginOptions {
+export interface ClientPluginOptions {
   router: router;
-  store: Store<AppState>;
+  store: Store<{
+    Auth: AuthState;
+    Client: AppState;
+    Entity: EntityState;
+    appName: string;
+  }>;
+  socket: any;
 }
 
 const plugin = {
-  install(vue: typeof Vue, options?: BoardzPluginOptions) {
+  install(vue: typeof Vue, options?: ClientPluginOptions) {
     if (options !== undefined && options.router && options.store) {
-
       vue.use(VueProgressBar, {
         color: "green",
         failedColor: "red",
         height: "2px",
+      });
+
+      Vue.use(BoardzPlugin, {
+        router: options.router,
+        store: options.store,
+        socket: options.socket,
       });
 
       Vue.use(AuthPlugin, {
@@ -45,12 +59,12 @@ const plugin = {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Vue.component(name, (components as any)[name]);
       });
-      
-      options.router.addRoutes(routes);
-      
-      options.store.registerModule("Boards", BoardzModule);
 
-      options.store.dispatch("Boards/setupSockets");
+      options.router.addRoutes(routes);
+
+      options.store.registerModule("Client", ClientModule);
+
+      options.store.dispatch("Client/setupSockets");
 
       const vuexLocalStorage = new VuexPersist({
         key: "boardz", // The key to store the state on in the storage provider.
@@ -65,6 +79,18 @@ const plugin = {
         //       showSkipped: state.News.showSkipped
         //     }
         // }),
+        reducer: (state: {
+          Auth: AuthState;
+          Client: AppState;
+          Entity: EntityState;
+          appName: string;
+        }) => ({
+          Auth: state.Auth,
+          Client: state.Client,
+          Entity: {
+            entities: state.Entity.entities,
+          },
+        }),
         // Function that passes a mutation and lets you decide if it should update the state in localStorage.
         // filter: (mutation) => true
       });
@@ -93,7 +119,12 @@ const plugin = {
           _store: options.store,
           store: {
             subscribe: function(
-              fn: (mutation: MutationPayload, state: AppState) => Function
+              fn: (mutation: MutationPayload, state: {
+                Auth: AuthState;
+                Client: AppState;
+                Entity: EntityState;
+                appName: string;
+              }) => Function
             ) {
               return options.store.subscribe.call(options.store, fn);
 
@@ -105,7 +136,12 @@ const plugin = {
               // return options.store.subscribe.apply(this, args);
             },
             subscribeAction: function(
-              fn: SubscribeActionOptions<ActionPayload, AppState>
+              fn: SubscribeActionOptions<ActionPayload, {
+                Auth: AuthState;
+                Client: AppState;
+                Entity: EntityState;
+                appName: string;
+              }>
             ) {
               return options.store.subscribeAction.call(options.store, fn);
             },
@@ -116,4 +152,4 @@ const plugin = {
   },
 };
 
-export default plugin as BoardsPlugin;
+export default plugin as ClientPlugin;

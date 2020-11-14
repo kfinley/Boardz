@@ -15,7 +15,8 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
-    "socket.io-client": "^2.3.0"
+    "socket.io-client": "^2.3.0",
+    "vuex-module-decorators": "^0.17.0"
   },
   "devDependencies": {
     "@types/node": "^13.7.0",
