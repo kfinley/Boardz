@@ -6,7 +6,7 @@
     "install-packages": "npm install --no-package-lock --prefer-offline",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-install-packages": "cd ../Packages && ./bpc.sh && cd ../Client && npm run install-packages",
+    "build-install": "cd ../Packages && ./bpc.sh && cd ../Client && npm run install-packages",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
@@ -30,7 +30,7 @@
     "api": "file:../Packages/dist/api-0.1.0.tgz",
     "auth": "file:../Packages/dist/auth-0.1.0.tgz",
     "auth-ui": "file:../Packages/dist/auth-ui-0.1.0.tgz",
-    "boardz": "file:../Packages/dist/boardz-0.1.0.tgz",
+    "entities": "file:../Packages/dist/entities-0.1.0.tgz",
     "config": "file:../Packages/dist/config-0.1.0.tgz",
     "@types/jest": "^24.0.19",
     "@types/node": "^13.13.4",

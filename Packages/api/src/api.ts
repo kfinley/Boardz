@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { Config } from "config";
-import { EntityList } from "boardz";
+import { EntityResult } from "entities";
 import { createLocalStorage } from "localstorage-ponyfill";
+import { GetAllEntitiesRequest, SortDirection } from "./types";
 
 const localStorage = createLocalStorage();
 
@@ -26,8 +27,8 @@ export const authHelper = {
     } else {
       return {};
     }
-  }
-}
+  },
+};
 
 //export const cookieJar = new tough.CookieJar();
 // export function authToken() : string | null{
@@ -54,7 +55,7 @@ export const api = {
 //axios.defaults.withCredentials = true;
 //axios.defaults.jar = cookieJar;
 
-export function urlFromType(type: string): string {
+function urlFromType(type: string): string {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   if (type.endsWith("s")) {
     throw "Handle plural entity names!";
@@ -71,7 +72,8 @@ export async function request<T>(
   cfg.headers = { ...cfg.headers, ...authHelper.authHeader() };
   //cfg.headers["user-agent"] = `${navigator.userAgent} ${Config.Agent}`;
 
-  //console.log(cfg);
+  console.log(`api.request: ${cfg.method} ${cfg.url}`);
+  
   //console.log(document.cookie);
   return await axios.request(cfg);
 }
@@ -79,23 +81,61 @@ export async function request<T>(
 export async function save(typeName: string, entity: any) {
   console.log(typeName);
   const url = urlFromType(typeName);
-  
-  return await post(url, entity);
-};
 
-export async function getEntities(type: string) {
-  const url = urlFromType(type);
+  return await post(url, entity);
+}
+
+function addUrlParam(url: string, param: string, value: any): string {
+  if (url.indexOf("?") === -1) {
+    url = url + "?";
+  } else {
+    url = url + "&";
+  }
+  url = `${url}${param}=${value}`;
+  return url;
+}
+
+export async function getEntities(req: GetAllEntitiesRequest) {
+  let url = urlFromType(req.type);
+
+  if (req.pageNumber > 0) {
+    url = addUrlParam(url, "pageNumber", req.pageNumber);
+  }
+
+  if (req.pageSize !== 10) {
+    url = addUrlParam(url, "pageSize", req.pageSize);
+  }
+
+  if (req.properties.length > 0) {
+    let props = "";
+    req.properties.forEach((prop) => {
+      props = `${props}${prop},`;
+    });
+    url = addUrlParam(url, "properties", props.slice(0, -1));
+  }
+
+  if (req.sortDirection == SortDirection.Descending) {
+    url = `${url}&sortDirection=${req.sortDirection}`;
+  }
+
+  if (req.sortBy) {
+    url = `${url}&sortBy=${req.sortBy}`;
+  }
+
+  if (req.filters !== undefined) {
+    url = `${url}&filters=${req.filters}`;
+  }
 
   return await request({
     url,
-    method: "GET"
+    method: "GET",
   });
-};
+}
 
 export async function getList<T>(type: new () => T) {
   const url = urlFromType(type.name);
 
-  return await request<EntityList<T>>({
+  return await request<EntityResult<T>>({
     url,
     method: "GET",
   });

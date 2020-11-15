@@ -20,7 +20,7 @@
     "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
-    "boardz": "file:../dist/boardz-0.1.0.tgz",
+    "entities": "file:../dist/entities-0.1.0.tgz",
     "config": "file:../dist/config-0.1.0.tgz",
     "@types/node": "^13.7.0",
     "@types/socket.io-client": "^1.4.32",

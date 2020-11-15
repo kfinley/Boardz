@@ -1,7 +1,7 @@
 import { actions } from "../actions";
 import nock from "nock";
 import { ActionContext } from "vuex";
-import { AppState } from "boardz";
+import { AppState } from "../index";
 
 import { api } from "api";
 

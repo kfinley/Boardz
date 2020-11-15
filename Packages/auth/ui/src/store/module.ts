@@ -4,7 +4,7 @@ import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 
 import { Credentials, AuthResponse, AuthStatus } from "auth";
 import { authHelper, Socket } from "api";
-import { AppUser } from "boardz";
+import { AppUser } from "entities";
 import { Config } from "config";
 import AuthState from "./state";
 

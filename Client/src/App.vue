@@ -13,7 +13,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Vue from "vue";
 import { namespace, State } from "vuex-class";
-import { AppState } from "boardz/dist/state/App";
+import { AppState } from "./store";
 
 const Store = namespace("Boards");
 

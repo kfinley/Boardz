@@ -9,7 +9,7 @@
   "scripts": {
     "serve": "gulp build && gulp serve",
     "install-packages": "npm install --no-package-lock --prefer-offline",
-    "ibs": "./install-packages.sh && npm run build && npm run start",
+    "ibs": "npm run install-packages && npm run build && npm run start",
     "start": "nodemon dist/index.js",
     "build": "tsc"
   },
@@ -29,9 +29,9 @@
   "dependencies": {
     "api": "file:../packages/dist/api-0.1.0.tgz",
     "auth": "file:../Packages/dist/auth-0.1.0.tgz",
-    "boardz": "file:../packages/dist/boardz-0.1.0.tgz",
     "config": "file:../Packages/dist/config-0.1.0.tgz",
     "cors": "^2.8.5",
+    "entities": "file:../packages/dist/entities-0.1.0.tgz",
     "express": "4.17.1",
     "socket.io": "^2.3.0"
   }

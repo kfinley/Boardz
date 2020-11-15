@@ -1,5 +1,5 @@
 import { getters } from "@/store/getters";
-import { AppState } from "boardz";
+import { AppState } from "../index";
 
 // mock State
 const mockState: AppState = {
