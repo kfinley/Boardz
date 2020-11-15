@@ -1,12 +1,11 @@
-import express from 'express';
+import express from "express";
 import cors from "cors";
 import * as http from "http";
-
 import { ChatServer } from "./chat";
-import { BoardzServer } from './boardz';
+import { BoardzServer } from "./boardz";
 
 export class SocketServer {
-  public static readonly PORT:number = 8085;
+  public static readonly PORT: number = 8085;
   private app: express.Application;
   private server: http.Server;
   private io: SocketIO.Server;
@@ -34,7 +33,16 @@ export class SocketServer {
   }
 
   private sockets(): void {
-    this.io = require("socket.io").listen(this.server, { origins: '*:*'});
+    this.io = require("socket.io")(this.server, {
+      cors: {
+        //TODO: Config this....
+        origin: [
+          "http://localhost:8081",
+          "http://boardz.app:8080",
+          "https://boardz.app",
+        ],
+      },
+    });
   }
 
   private listen(): void {
