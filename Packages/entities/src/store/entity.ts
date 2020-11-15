@@ -31,7 +31,7 @@ export default class EntitiesModule extends VuexModule implements EntityState {
       getProp(this.entities, [type.name.toLocaleLowerCase() + "s"])
     );
 
-    if (undefined === set || set.current) {
+    if (set == undefined || set.current == undefined) {
       if (set === undefined) {
         set = {
           pageNumber: 0,
@@ -57,7 +57,7 @@ export default class EntitiesModule extends VuexModule implements EntityState {
   }
 
   @Mutation setEntities(params: { name: string; set: [] }) {
-    setProp(this.entities, [params.name.toLocaleLowerCase() + "s"], params.set);
+    setProp(this.entities, [params.name.toLocaleLowerCase() + "s", "current"], params.set);
   }
 
   @Mutation
