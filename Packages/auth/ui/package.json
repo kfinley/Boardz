@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "api": "file:../../dist/api-0.1.0.tgz",
-    "boardz": "file:../../dist/boardz-0.1.0.tgz",
+    "entities": "file:../../dist/entities-0.1.0.tgz",
     "config": "file:../../dist/config-0.1.0.tgz",
     "auth": "file:../../dist/auth-0.1.0.tgz",
     "@types/jest": "^24.0.19",

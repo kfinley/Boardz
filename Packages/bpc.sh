@@ -3,7 +3,7 @@
 ./clean.sh
 cd config
 npm run bpc
-cd ../boardz
+cd ../entities
 npm run bpc
 cd ../api
 npm run bpc

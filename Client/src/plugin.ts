@@ -13,11 +13,11 @@ import { routes } from "@/router/boards";
 import ClientModule from "./store/index";
 import components from "./components";
 
-import { AppState } from "boardz";
+import { AppState } from "./store";
 import AuthPlugin from "auth-ui/src";
-import BoardzPlugin from "boardz";
+import EntitiesPlugin from "entities";
 import AuthState from "auth-ui/src/store/state";
-import EntityState from "boardz/dist/state/entity";
+import EntityState from "entities/dist/state/entity";
 
 export interface ClientPlugin extends PluginObject<ClientPluginOptions> {
   install: PluginFunction<ClientPluginOptions>;
@@ -44,7 +44,7 @@ const plugin = {
         height: "2px",
       });
 
-      Vue.use(BoardzPlugin, {
+      Vue.use(EntitiesPlugin, {
         router: options.router,
         store: options.store,
         socket: options.socket,

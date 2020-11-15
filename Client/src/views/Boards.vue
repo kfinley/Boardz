@@ -4,7 +4,7 @@
     <h1>All Boards</h1>
     <div v-if="entities['boards']">
       <ul>
-        <li v-for="board in entities['boards']" :key="board.Id">
+        <li v-for="board in entities.boards.current" :key="board.Id">
           {{ board.Name }}
         </li>
       </ul>
@@ -24,14 +24,14 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { Board } from "boardz";
+import { EntitySet, Board } from "entities/";
 
 const Entity = namespace("Entity");
 
 @Component({})
 export default class Boards extends Vue {
   @Entity.State("entities")
-  entities!: {};
+  entities!: { boards: EntitySet };
 
   @Entity.Action
   refresh!: Function;

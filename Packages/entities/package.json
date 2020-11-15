@@ -1,14 +1,14 @@
 {
-  "name": "boardz",
+  "name": "entities",
   "version": "0.1.0",
-  "description": "Boardz module",
+  "description": "Entities module",
   "private": true,
   "main": "./dist/index.js",
   "scripts": {
-    "build": "rm -f boardz-0.1.0.tgz && tsc",
+    "build": "rm -f entities-0.1.0.tgz && tsc",
     "build-pack": "npm run build && npm pack",
     "install-packages": "npm install --no-package-lock --prefer-offline",
-    "bpc": "npm run install-packages && npm run build-pack && cp boardz-0.1.0.tgz ../dist/boardz-0.1.0.tgz",
+    "bpc": "npm run install-packages && npm run build-pack && cp entities-0.1.0.tgz ../dist/entities-0.1.0.tgz",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kyle Finley",
@@ -16,6 +16,8 @@
   "dependencies": {
     "axios": "^0.19.2",
     "socket.io-client": "^2.3.0",
+    "vue": "^2.6.11",
+    "vuex": "^3.1.3",
     "vuex-module-decorators": "^0.17.0"
   },
   "devDependencies": {

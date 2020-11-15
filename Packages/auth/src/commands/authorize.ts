@@ -1,7 +1,7 @@
 import qs from "querystring";
 import { Credentials, AuthResponse } from "../types";
 import { Config } from "config";
-import { AppUser } from "boardz";
+import { AppUser } from "entities";
 import { api, post } from "api";
 import { createLocalStorage } from "localstorage-ponyfill";
 

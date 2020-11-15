@@ -28,7 +28,8 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { namespace, State } from "vuex-class";
-import appState, { AppState, Board } from "boardz";
+import appState, { AppState } from "../store";
+import { Board } from "entities";
 
 const Entity = namespace("Entity");
 

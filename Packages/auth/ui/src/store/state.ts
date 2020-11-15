@@ -1,4 +1,4 @@
-import { AppUser } from "boardz";
+import { AppUser } from "entities";
 import { AuthStatus } from "auth";
 
 export default interface AuthState {

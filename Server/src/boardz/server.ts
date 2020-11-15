@@ -1,6 +1,5 @@
 import * as http from "http";
-import { getList, authHelper, api, save, getEntities } from "api";
-import { Board } from "boardz";
+import { GetAllEntitiesRequest, authHelper, api, save, getEntities } from "api";
 import { Config } from "config";
 import { authenticate } from "auth";
 
@@ -72,12 +71,12 @@ export default class BoardzServer {
           });
       });
 
-      socket.on("Entity/getAll", (name: string) => {
-        
-        const response = getEntities(name)
+      socket.on("Entity/getAll", (req: GetAllEntitiesRequest) => {
+        //console.log(req);
+        const response = getEntities(req)
           .then((get) => {
-            console.log(`Entity/${name}s, ${JSON.stringify(get.data)}`);
-            socket.emit(`Entity/${name}s`, get.data);
+            console.log(`Entity/${req.type}s, ${JSON.stringify(get.data)}`);
+            socket.emit(`Entity/${req.type}s`, get.data);
           })
           .catch((e) => {
             console.log(e);
