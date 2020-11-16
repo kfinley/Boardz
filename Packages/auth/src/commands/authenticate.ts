@@ -9,7 +9,7 @@ export async function authenticate(creds: Credentials): Promise<AuthResponse> {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response = await post<AuthResponse>(api.Login, data, {
+  const response = await post<AuthResponse>(api.Auth, data, {
     // "User-Agent": Config.Agent,
     "Content-Type": "application/x-www-form-urlencoded",
   });

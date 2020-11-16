@@ -85,7 +85,8 @@ export default class Login extends Vue {
       if (this.$route.query && this.$route.query.returnUrl) {
         this.$router.push(this.$route.query.returnUrl as string);
       } else {
-        this.$router.push({ name: "Boards" });
+        //TODO: Fix this...
+        this.$router.push({ name: "Home" });
       }
     }
   }

@@ -1,7 +1,7 @@
 import * as http from 'http';
 import { Message } from "./models/index";
 
-export default class ChatServer {
+export default class ChatModule {
   private server: http.Server;
   private io: SocketIO.Server;
 
