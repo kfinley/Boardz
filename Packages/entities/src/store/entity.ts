@@ -6,7 +6,7 @@ import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import EntityState from "../state/entity";
 import getProp from "../helpers/getProp";
 import setProp from "../helpers/setProp";
-import { EntitySet, SortDirection } from "@/types";
+import { EntitySet } from "@/types";
 
 Vue.use(Vuex);
 const store = new Vuex.Store({});

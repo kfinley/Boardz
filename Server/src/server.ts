@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
 import * as http from "http";
-import { ChatServer } from "./chat";
-import { BoardzServer } from "./boardz";
+import ChatModule from "./chat";
+import EntitiesModule from "./entities";
+import AuthModule from './auth';
 
 export class SocketServer {
   public static readonly PORT: number = 8085;
@@ -50,11 +51,15 @@ export class SocketServer {
       console.log("Running server on port %s", this.port);
     });
 
-    const chat = new ChatServer(this.server, this.io);
-    chat.listen();
+    // const chat = new ChatModule(this.server, this.io);
+    // chat.listen();
 
-    const boardz = new BoardzServer(this.server, this.io);
-    boardz.listen();
+    const auth = new AuthModule(this.server, this.io);
+    auth.listen();
+        
+    const entities = new EntitiesModule(this.server, this.io);
+    entities.listen();
+
   }
 
   public getApp(): express.Application {

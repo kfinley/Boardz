@@ -48,7 +48,7 @@ export const authHelper = {
 export const api = {
   BaseUrl: baseUrl,
   Boards: `${baseUrl}/boards`,
-  Login: `${baseUrl}/auth`,
+  Auth: `${baseUrl}/auth`,
 };
 
 //axiosCookieJarSupport(axios);

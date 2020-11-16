@@ -44,7 +44,7 @@ export default class AuthModule extends VuexModule implements AuthState {
 
   @Mutation
   logout() {
-    console.log("logout")
+    console.log("logout");
     this.status = AuthStatus.LoggedOut;
     this.user = undefined;
   }
@@ -65,7 +65,7 @@ export default class AuthModule extends VuexModule implements AuthState {
   @Action
   authorize() {
     try {
-      if ((this.context as any).state.status == AuthStatus.LoggingIn) {
+      if ((this.context as any).state.status === AuthStatus.LoggingIn) {
         this.context.commit("logout");
       }
 
