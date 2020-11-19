@@ -1,12 +1,11 @@
-import { Socket } from "socket.io-client";
+import SocketIOClient from "socket.io-client";
 import Vue from "vue";
-
 import Vuex from "vuex";
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import EntityState from "../state/entity";
 import getProp from "../helpers/getProp";
 import setProp from "../helpers/setProp";
-import { EntitySet } from "@/types";
+import { EntitySet } from "../types";
 
 Vue.use(Vuex);
 const store = new Vuex.Store({});
@@ -14,7 +13,7 @@ const store = new Vuex.Store({});
 @Module({ dynamic: true, namespaced: true, store: store, name: "Entity" })
 export default class EntitiesModule extends VuexModule implements EntityState {
   public entities = {};
-  public socket = null as typeof Socket | null;
+  public socket = null as SocketIOClient.Socket | null;
 
   get getEntities() {
     return this.entities;
@@ -27,10 +26,9 @@ export default class EntitiesModule extends VuexModule implements EntityState {
 
   @Mutation
   async refreshEntities(type: { name: string }) {
-    let set = <EntitySet>(
-      getProp(this.entities, [type.name.toLocaleLowerCase() + "s"])
-    );
-
+    let set = getProp(this.entities, [
+      type.name.toLocaleLowerCase() + "s",
+    ]) as EntitySet;
     if (set == undefined || set.current == undefined) {
       if (set === undefined) {
         set = {
@@ -57,7 +55,11 @@ export default class EntitiesModule extends VuexModule implements EntityState {
   }
 
   @Mutation setEntities(params: { name: string; set: [] }) {
-    setProp(this.entities, [params.name.toLocaleLowerCase() + "s", "current"], params.set);
+    setProp(
+      this.entities,
+      [params.name.toLocaleLowerCase() + "s", "current"],
+      params.set
+    );
   }
 
   @Mutation
@@ -88,9 +90,9 @@ export default class EntitiesModule extends VuexModule implements EntityState {
   add(entity: any) {
     console.log(`Entity/add: ${entity}`);
 
-    let set = <EntitySet>(
-      getProp(this.entities, [entity.EntityType.toLowerCase() + "s"])
-    );
+    const set = getProp(this.entities, [
+      entity.EntityType.toLowerCase() + "s",
+    ]) as EntitySet;
 
     set.all.push(entity as never);
 

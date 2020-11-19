@@ -23,7 +23,6 @@
     "@types/node": "^13.7.0",
     "@types/socket.io-client": "^1.4.34",
     "config": "file:../dist/config-0.1.0.tgz",
-    "entities": "file:../dist/entities-0.1.0.tgz",
     "typescript": "^3.8.3"
   },
   "files": [

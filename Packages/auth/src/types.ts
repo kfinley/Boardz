@@ -3,6 +3,7 @@ export enum AuthStatus {
     LoggingIn = "LoggingIn",
     LoggedIn = "LoggedIn",
     LoginFailed = "LoginFailed",
+    Refreshing = "Refreshing",
     Registering = "Registering",
     Locked = "Locked",
   }

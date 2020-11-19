@@ -28,7 +28,7 @@ export default class AuthModule extends VuexModule implements AuthState {
     //TODO: inject storage...
     //TODO: move this to command
     localStorage.setItem(`${Config.Agent}:access_token`, response.AccessToken);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     localStorage.setItem(
       `${Config.Agent}:refresh_token`,
       response.RefreshToken
@@ -39,6 +39,7 @@ export default class AuthModule extends VuexModule implements AuthState {
   @Mutation
   failed() {
     this.status = AuthStatus.LoginFailed;
+    localStorage.removeItem(`${Config.Agent}:access_token`);
     this.user = undefined;
   }
 
@@ -47,6 +48,15 @@ export default class AuthModule extends VuexModule implements AuthState {
     console.log("logout");
     this.status = AuthStatus.LoggedOut;
     this.user = undefined;
+  }
+
+  @Mutation
+  refresh() {
+    this.status = AuthStatus.Refreshing;
+    Socket.emit("Auth/refresh", {
+      username: this.user?.username,
+      refreshToken: authHelper.refreshToken(),
+    });
   }
 
   @Mutation

@@ -27,9 +27,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { namespace, State } from "vuex-class";
-import appState, { AppState } from "../store";
-import { Board } from "entities";
+import { namespace } from "vuex-class";
+import { Board } from "entities/src";
 
 const Entity = namespace("Entity");
 

@@ -10,4 +10,8 @@ export function configureListeners(commit: Commit) {
   Socket.on("Auth/failed", () => {
     commit("Auth/failed");
   });
+
+  Socket.on('Auth/refresh', () => {
+    commit("Auth/refresh");
+  });
 }

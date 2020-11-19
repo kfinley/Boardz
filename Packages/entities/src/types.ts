@@ -1,24 +1,25 @@
 export interface AppUser {
-    username: string;
+  username: string;
 }
 
 export enum SortDirection {
-    Ascending,
-    Descending
+  Ascending,
+  Descending,
 }
 
 export interface EntitySet {
-    pageNumber: number,
-    pageSize: number, 
-    sortBy?: string,
-    sortDirection?: SortDirection,
-    filters: any,
-    properties: Array<string>
-    current: [],
-    all: [] 
+  pageNumber: number;
+  pageSize: number;
+  sortBy?: string;
+  sortDirection?: SortDirection;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  filters: any;
+  properties: Array<string>;
+  current: [];
+  all: [];
 }
 
 export interface EntityResult<T> {
-    Entities: T[];
-    TotalRecords: number;
+  Entities: T[];
+  TotalRecords: number;
 }
