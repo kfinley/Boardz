@@ -28,7 +28,7 @@
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import { Board } from "entities/src";
+import { Board } from "../entities";
 
 const Entity = namespace("Entity");
 
