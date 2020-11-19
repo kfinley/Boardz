@@ -9,6 +9,7 @@ export function configureListeners(commit: Commit, socket: any) {
     //commit("Entity/saved", data);
   });
 
+  //TODO: pass in a collection of entity types to register events for...
   socket.on("Entity/Boards", (data: { TotalRecords: number; Entities: [] }) => {
     console.log(`Socket <-- Entity/Boards : ${JSON.stringify(data.Entities)}`);
     commit("Entity/store", { typeName: "Boards", entities: data.Entities });

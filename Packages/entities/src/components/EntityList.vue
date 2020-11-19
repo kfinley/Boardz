@@ -1,9 +1,13 @@
 <template>
   <div>
-    <h1>All {{ titleName }}</h1>
+    <h2>All {{ titleName }}</h2>
     <div v-if="entities[keyName]">
-      <ul>
-        <li v-for="entity in entities[keyName].current" :key="entity.Id">
+      <ul class="entity-list">
+        <li
+          v-for="entity in entities[keyName].current"
+          :key="entity.Id"
+          class="entity-list-item"
+        >
           <slot :entity="entity">
             {{ entity.Id }}
           </slot>
@@ -46,4 +50,23 @@ export default class EntityList extends Vue {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+ol,
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.entity-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.entity-list-item {
+  width: 31.3%;
+  padding: 0;
+  margin: 0 2% 2% 0;
+  transform: translate(0);
+}
+</style>

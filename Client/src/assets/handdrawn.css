@@ -165,14 +165,15 @@ ul li {
   position: relative;
 }
 
-ul li:before {
+/* Commented out - EnitytList component */
+/* ul li:before {
   font-family: icons;
   content: "\E02D";
   position: absolute;
   top: -0.4rem;
   left: -1.3rem;
   font-size: 0.7rem;
-}
+} */
 
 /**
  * http://blog.felixhagspiel.de/index.php/posts/custom-inputs
