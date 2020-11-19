@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/node": "^13.7.0",
     "@types/qs": "^6.9.2",
-    "@types/socket.io-client": "^1.4.32",
+    "@types/socket.io-client": "^1.4.34",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "api": "file:../dist/api-0.1.0.tgz",

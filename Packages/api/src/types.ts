@@ -12,3 +12,9 @@ export interface GetAllEntitiesRequest {
     filters: string,
     properties: Array<string>
 }
+
+export interface EntityResult<T> {
+    Entities: T[];
+    TotalRecords: number;
+  }
+  

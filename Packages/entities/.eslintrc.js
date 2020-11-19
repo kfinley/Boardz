@@ -6,11 +6,17 @@ module.exports = {
   'extends': [
     "plugin:@typescript-eslint/recommended",
     'eslint:recommended',
+    // Vue2 based plugins
+    'plugin:vue/base',
+    'plugin:vue/essential',
+    'plugin:vue/recommended',
+    '@vue/typescript/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2020
   },
   plugins: [
+    "vue",
     "@typescript-eslint"
   ],
   rules: {

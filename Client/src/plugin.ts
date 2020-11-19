@@ -15,9 +15,9 @@ import components from "./components";
 
 import { AppState } from "./store";
 import AuthPlugin from "auth-ui/src";
-import EntitiesPlugin from "entities";
+import EntitiesPlugin from "entities/src";
 import AuthState from "auth-ui/src/store/state";
-import EntityState from "entities/dist/state/entity";
+import EntityState from "entities/src/state/entity";
 
 export interface ClientPlugin extends PluginObject<ClientPluginOptions> {
   install: PluginFunction<ClientPluginOptions>;
@@ -52,7 +52,7 @@ const plugin = {
 
       Vue.use(AuthPlugin, {
         router: options.router,
-        store: options.store
+        store: options.store,
       });
 
       Object.keys(components).forEach((name) => {
@@ -119,12 +119,15 @@ const plugin = {
           _store: options.store,
           store: {
             subscribe: function(
-              fn: (mutation: MutationPayload, state: {
-                Auth: AuthState;
-                Client: AppState;
-                Entity: EntityState;
-                appName: string;
-              }) => Function
+              fn: (
+                mutation: MutationPayload,
+                state: {
+                  Auth: AuthState;
+                  Client: AppState;
+                  Entity: EntityState;
+                  appName: string;
+                }
+              ) => Function
             ) {
               return options.store.subscribe.call(options.store, fn);
 
@@ -136,12 +139,15 @@ const plugin = {
               // return options.store.subscribe.apply(this, args);
             },
             subscribeAction: function(
-              fn: SubscribeActionOptions<ActionPayload, {
-                Auth: AuthState;
-                Client: AppState;
-                Entity: EntityState;
-                appName: string;
-              }>
+              fn: SubscribeActionOptions<
+                ActionPayload,
+                {
+                  Auth: AuthState;
+                  Client: AppState;
+                  Entity: EntityState;
+                  appName: string;
+                }
+              >
             ) {
               return options.store.subscribeAction.call(options.store, fn);
             },

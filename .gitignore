@@ -2,6 +2,7 @@
 node_modules
 dist
 /Links
+.scrap
 
 # local env files
 .env.local

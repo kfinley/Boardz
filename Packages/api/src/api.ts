@@ -1,8 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { Config } from "config";
-import { EntityResult } from "entities";
 import { createLocalStorage } from "localstorage-ponyfill";
-import { GetAllEntitiesRequest, SortDirection } from "./types";
+import { GetAllEntitiesRequest, EntityResult, SortDirection } from "./types";
 
 const localStorage = createLocalStorage();
 
@@ -20,12 +19,27 @@ export const authHelper = {
     const token = localStorage.getItem(`${Config.Agent}:access_token`);
     return token;
   },
+  refreshToken: () => {
+    const token = localStorage.getItem(`${Config.Agent}:refresh_token`);
+    return token;
+  },
+  username: () => {
+    return ""; // Stub to be handled elsewhere...
+  },
   authHeader: () => {
-    const token = authHelper.authToken();
-    if (token) {
-      return { Authorization: "Bearer " + token };
-    } else {
-      return {};
+    try {
+      const token = authHelper.authToken();
+      if (token) {
+        return { Authorization: "Bearer " + token };
+      } else {
+        return {
+          Authorization: `${authHelper.username()} ${authHelper.refreshToken()}`,
+        };
+      }
+    } catch (e) {
+      console.log(
+        `Error generating request auth headers. ${JSON.stringify(e)}`
+      );
     }
   },
 };
@@ -49,6 +63,7 @@ export const api = {
   BaseUrl: baseUrl,
   Boards: `${baseUrl}/boards`,
   Auth: `${baseUrl}/auth`,
+  Refresh: `${baseUrl}/refresh`,
 };
 
 //axiosCookieJarSupport(axios);
@@ -69,13 +84,36 @@ export async function request<T>(
   // await get Access Token from store
   // Build up config
 
-  cfg.headers = { ...cfg.headers, ...authHelper.authHeader() };
-  //cfg.headers["user-agent"] = `${navigator.userAgent} ${Config.Agent}`;
+  try {
+    cfg.headers = { ...cfg.headers, ...authHelper.authHeader() };
 
-  console.log(`api.request: ${cfg.method} ${cfg.url}`);
-  
-  //console.log(document.cookie);
-  return await axios.request(cfg);
+    console.log(`api.request: ${cfg.method} ${cfg.url}`);
+  } catch (e) {
+    const err = { message: `Error creating request header`, error: e };
+    console.log(err.message);
+    throw err;
+  }
+
+  try {
+    return await axios.request(cfg);
+  } catch (e) {
+    if (e.response) {
+      // (5xx, 4xx)
+      if (e.response.status === 401) {
+        console.log("Unauthorized! Refresh token...");
+        throw "Refresh";
+      }
+      console.log(`Error in api.request: ${JSON.stringify(e)}`);
+      throw e;
+    } else if (e.request) {
+      // no response | never sent
+      console.log(`Error in api.request: ${JSON.stringify(e)}`);
+      throw e;
+    } else {
+      console.log(`Unhandled Error in api.request: ${JSON.stringify(e)}`);
+      throw e;
+    }
+  }
 }
 
 export async function save(typeName: string, entity: any) {
@@ -157,3 +195,10 @@ export async function post<T>(url: string, data: any, headers?: {}) {
     headers,
   });
 }
+
+/*
+    Notes....
+    
+    Review error handling and axios retry
+    https://www.intricatecloud.io/2020/03/how-to-handle-api-errors-in-your-web-app-using-axios/
+*/
