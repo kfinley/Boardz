@@ -60,7 +60,7 @@ export default class AuthModule {
           return (socket as any).token;
         };
         const response = authorize()
-          .then((response: AuthResponse) => {            
+          .then((response: AuthResponse) => {
             if (!response) {
               socket.emit("Auth/failed");
             }
@@ -93,24 +93,28 @@ export default class AuthModule {
 
         const response = refresh()
           .then((response: AuthResponse) => {
-            console.log(`respnose: ${JSON.stringify(response)}`);
+            console.log(`response: ${JSON.stringify(response)}`);
 
-            (socket as any).token = response.AccessToken;
-            (socket as any).refreshToken = response.RefreshToken;
+            if (response.Success) {
+              (socket as any).token = response.AccessToken;
+              (socket as any).refreshToken = response.RefreshToken;
 
-            socket.emit("Auth/success", response);
+              socket.emit("Auth/success", response);
 
-            authHelper.authToken = () => {
-              return (socket as any).token;
-            };
-            authHelper.refreshToken = () => {
-              return (socket as any).refreshToken;
-            };
+              authHelper.authToken = () => {
+                return (socket as any).token;
+              };
+              authHelper.refreshToken = () => {
+                return (socket as any).refreshToken;
+              };
+            } else {
+              socket.emit("Auth/logout");
+            }
           })
           .catch((e) => {
             console.log(`Error in Auth/refresh: ${JSON.stringify(e)}`);
             //TODO: API currently sends 500 for failed login. Need to fix....
-            socket.emit("Auth/failed");
+            socket.emit("Auth/logout");
           });
       });
 

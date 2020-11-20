@@ -22,9 +22,11 @@ export interface AuthPluginOptions {
 const plugin = {
   install(vue: typeof Vue, options?: AuthPluginOptions) {
     if (options !== undefined && options.router && options.store) {
-
-      options.redirectRoute = options.redirectRoute ?? "Home";      
-      options.appName = options.appName ?? options.store.state.appName ?? options.store.state.appName;
+      options.redirectRoute = options.redirectRoute ?? "Home";
+      options.appName =
+        options.appName ??
+        options.store.state.appName ??
+        options.store.state.appName;
       vue.use(VueProgressBar, {
         color: "green",
         failedColor: "red",
@@ -44,11 +46,10 @@ const plugin = {
       }
 
       configureListeners(options.store.commit);
-      
-      options.router.addRoutes(pluginRoutes);
-      
-      options.router.beforeEach((to, from, next) => {
 
+      options.router.addRoutes(pluginRoutes);
+
+      options.router.beforeEach((to, from, next) => {
         if (to.meta.allowAnonymous) {
           if (
             options.store.state.Auth.status == AuthStatus.LoggedIn &&
@@ -61,11 +62,14 @@ const plugin = {
 
         switch (options.store.state.Auth.status) {
           case AuthStatus.LoggingIn:
+          case AuthStatus.LoginFailed:
+          case AuthStatus.Refreshing:
+            console.log(`beforeEach: ${to.name}`);
             options.store.commit("Auth/logout");
             next({ name: "Auth" });
             return;
           case AuthStatus.LoggedIn:
-            if (to.name == "Auth") {              
+            if (to.name == "Auth") {
               next({ name: options.redirectRoute });
               return;
             }
@@ -77,13 +81,28 @@ const plugin = {
               return;
             }
             next({ name: "Auth" });
-            return;          
+            return;
           default:
             next({ name: "About" });
             return;
         }
       });
 
+      options.store.watch(
+        (state) => options.store.state.Auth.status,
+        (newValue, oldValue) => {
+          if (newValue === AuthStatus.LoggedIn) {
+            //TODO: Fix this...
+            // if (route.query && options.route.query.returnUrl) {
+            //   options.router.push(this.$route.query.returnUrl as string);
+            // } else {
+            options.router.push({ name: "Home" });
+            //}
+          } else if (newValue === AuthStatus.LoggedOut) {
+            options.router.push({ name: "Auth" });
+          }
+        }
+      );
       const waitForStorageToBeReady = async (
         to: Route,
         from: Route,
@@ -91,7 +110,7 @@ const plugin = {
       ) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         await (options.store as any).restored;
-        options.store.dispatch("Auth/authorize");  
+        options.store.dispatch("Auth/authorize");
         // window.console.log(options.store.state);
         //window.console.log("state restored");
         next();

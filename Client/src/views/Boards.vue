@@ -59,6 +59,7 @@ export default class Boards extends Vue {
   flex: 0 0 auto;
   font-size: 17px;
   font-weight: 800;
+  letter-spacing: .07em;
   display: inline-block;
   overflow: hidden;
   max-height: 40px;
