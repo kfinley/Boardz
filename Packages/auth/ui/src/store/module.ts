@@ -41,7 +41,6 @@ export default class AuthModule extends VuexModule implements AuthState {
     this.status = AuthStatus.LoginFailed;
     localStorage.removeItem(`${Config.Agent}:access_token`);
     this.user = undefined;
-
   }
 
   @Mutation
@@ -49,8 +48,8 @@ export default class AuthModule extends VuexModule implements AuthState {
     console.log("logout");
     this.status = AuthStatus.LoggedOut;
     localStorage.removeItem(`${Config.Agent}:access_token`);
+    localStorage.removeItem(`${Config.Agent}:refresh_token`);
     this.user = undefined;
-    
   }
 
   @Mutation

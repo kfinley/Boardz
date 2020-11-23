@@ -1,11 +1,15 @@
 <template>
   <div>
-    <entity-list type="Board">
-      <template slot-scope="{ entity }">
-        <a :href="link(entity)" class="hd-border board">
+    <entity-list title="All Boards" type="Board">
+      <template v-slot="{ entity: board }">
+        <a
+          class="hd-border board"
+          :href="link(board)"
+          @click.prevent="viewBoard(board.Name)"
+        >
           <div class="board-details">
-            <div :title="entity.Name" dir="auto" class="board-name">
-              <div>{{ entity.Name }}</div>
+            <div :title="board.Name" dir="auto" class="board-name">
+              <div>{{ board.Name }}</div>
             </div>
             <div class="board-details-container">
               <span class="board-attributes"></span>
@@ -26,12 +30,26 @@ import { Component } from "vue-property-decorator";
 import { Board } from "../entities";
 
 @Component({})
-export default class Boards extends Vue {
+export default class BoardsView extends Vue {
   addBoard() {
     this.$router.push({ name: "AddBoard" });
   }
+  slug(name: string) {
+    return name.replace(" ", "-");
+  }
   link(entity: Board) {
-    return `/board/${entity.Name.replace(' ', '-')}`;
+    return `/board/${this.slug(entity.Name)}`;
+  }
+  viewBoard(name: string) {
+    this.$router.push({
+      name: "Board",
+      params: { nameSlug: this.slug(name) },
+    });
+    return false;
+  }
+
+  created() {
+    console.log((this as any)._uid);
   }
 }
 </script>
@@ -59,7 +77,7 @@ export default class Boards extends Vue {
   flex: 0 0 auto;
   font-size: 17px;
   font-weight: 800;
-  letter-spacing: .07em;
+  letter-spacing: 0.07em;
   display: inline-block;
   overflow: hidden;
   max-height: 40px;

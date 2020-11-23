@@ -2,9 +2,11 @@
 <template>
   <div id="app">
     <div id="nav">
+      <router-link to="/">Home</router-link> |
       <router-link to="/boards">Boardz</router-link> |
       <router-link to="/about">About</router-link>
     </div>
+
     <router-view />
   </div>
 </template>
@@ -20,12 +22,12 @@ const Store = namespace("Boards");
 export default class App extends Vue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   $Progress: any;
-  
+
   appHeight = () =>
     document.documentElement.style.setProperty(
       "--app-height",
       `${window.innerHeight}px`
-     );
+    );
 
   mounted() {
     this.showInstallMessage();
@@ -80,7 +82,7 @@ textarea {
   font-size: medium;
 }
 button {
-  font-size: xx-large
+  font-size: xx-large;
 }
 form * {
   padding: 5px;

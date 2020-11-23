@@ -8,9 +8,9 @@
 import Board from "@/components/Board";
 
 export default {
-  name: "Home",
+  name: "HomeView",
   components: {
-    Board
+    Board,
   }
 };
 </script>

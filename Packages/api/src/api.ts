@@ -153,15 +153,16 @@ export async function getEntities(req: GetAllEntitiesRequest) {
   }
 
   if (req.sortDirection == SortDirection.Descending) {
-    url = `${url}&sortDirection=${req.sortDirection}`;
+    url = addUrlParam(url, "sortDirection", req.sortDirection);
   }
 
   if (req.sortBy) {
-    url = `${url}&sortBy=${req.sortBy}`;
+    url = addUrlParam(url, "sortBy", req.sortBy);
   }
 
-  if (req.filters !== undefined) {
-    url = `${url}&filters=${req.filters}`;
+  if (req.filters !== "") {
+    // http://boardz.app:8080/api/v1/boards?pageNumber=0&pageSize=10&filters=%5B%5B%22%22%2C%22yo%22%5D%5D
+    url = addUrlParam(url, "filters", encodeURI(req.filters));
   }
 
   return await request({
