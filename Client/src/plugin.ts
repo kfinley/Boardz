@@ -18,6 +18,7 @@ import AuthPlugin from "auth-ui/src";
 import EntitiesPlugin from "entities/src";
 import AuthState from "auth-ui/src/store/state";
 import EntityState from "entities/src/state/entity";
+import entityTypes from "./entities";
 
 export interface ClientPlugin extends PluginObject<ClientPluginOptions> {
   install: PluginFunction<ClientPluginOptions>;
@@ -47,6 +48,7 @@ const plugin = {
       Vue.use(EntitiesPlugin, {
         router: options.router,
         store: options.store,
+        entityTypes,
         socket: options.socket,
       });
 

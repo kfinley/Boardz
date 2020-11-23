@@ -4,7 +4,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import VueRouter from "vue-router";
 import router from "./router";
-import BoardsPlugin from './plugin';
+import ClientPlugin from './plugin';
 import store  from '@/store/root';
 import { Socket } from 'api';
 
@@ -13,7 +13,7 @@ Vue.config.productionTip = false;
 Vue.use(Vuex);
 Vue.use(VueRouter);
 
-Vue.use(BoardsPlugin, {
+Vue.use(ClientPlugin, {
   router,
   store,
   socket: Socket

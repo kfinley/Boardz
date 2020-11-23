@@ -4,5 +4,4 @@ export function configureListeners(commit: Commit) {
   // Socket.on("xxxx", (data: any) => {
   //   commit("xxxx", data);
   // });
-
 }

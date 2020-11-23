@@ -12,6 +12,7 @@ export interface EntitiesPlugin extends PluginObject<EntitiesPluginOptions> {
 export interface EntitiesPluginOptions {
   appName: string;
   store: Store<any>;
+  entityTypes: { name: string }[];
   socket: any;
 }
 
@@ -35,7 +36,11 @@ const plugin = {
 
       options.store.commit("Entity/setup", options);
 
-      configureListeners(options.store.commit, options.socket);
+      configureListeners(
+        options.store.commit,
+        options.socket,
+        options.entityTypes
+      );
     }
   },
 };

@@ -8,9 +8,15 @@ export const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "boards" */ "@/views/Boards.vue"),
   },
   {
+    path: "/board/:nameSlug",
+    name: "Board",
+    component: () =>
+      import(/* webpackChunkName: "board" */ "@/views/Board.vue"),
+  },
+  {
     path: "/board/add",
     name: "AddBoard",
     component: () =>
-      import(/* webpackChunkName: "boards" */ "@/views/AddBoard.vue"),
+      import(/* webpackChunkName: "addboards" */ "@/views/AddBoard.vue"),
   },
 ];

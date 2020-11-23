@@ -91,6 +91,9 @@ const plugin = {
       options.store.watch(
         (state) => options.store.state.Auth.status,
         (newValue, oldValue) => {
+          if (options.router.currentRoute.meta.allowAnonymous) {
+            return;
+          }
           if (newValue === AuthStatus.LoggedIn) {
             //TODO: Fix this...
             // if (route.query && options.route.query.returnUrl) {
@@ -103,6 +106,7 @@ const plugin = {
           }
         }
       );
+      
       const waitForStorageToBeReady = async (
         to: Route,
         from: Route,
