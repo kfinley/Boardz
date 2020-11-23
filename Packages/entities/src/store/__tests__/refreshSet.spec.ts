@@ -22,6 +22,8 @@ describe("Entities Module: refreshSet", () => {
     // 1. setup payload
     const payload = { type: { name: "Board" }, id: "Foo" };
 
+    let socketAsserts = false;
+
     // 2. Setup mocked socket server listeners to and asserts
     socketServer.on("Entity/getAll", function(message: any) {
       expect(message).toMatchObject({
@@ -32,6 +34,7 @@ describe("Entities Module: refreshSet", () => {
         properties: [],
         type: "Board",
       });
+      socketAsserts = true;
     });
 
     // 3. Act on sut
@@ -40,6 +43,7 @@ describe("Entities Module: refreshSet", () => {
       .then(() => {
         // 4. Assert any store values, mocks, spys, etc. after action
         expect(emitSpy).toHaveBeenCalledTimes(1);
+        expect(socketAsserts).toBeTruthy();
       })
       .catch((e) => {
         // 5. Catch any errors and fail the test

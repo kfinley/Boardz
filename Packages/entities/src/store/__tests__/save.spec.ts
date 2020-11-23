@@ -28,14 +28,17 @@ describe("Entities Module: save", () => {
       },
     };
 
+    let socketAsserts = false;
+
     // Mock
     socketServer.on("Entity/save", (name: any, entity: any) => {
-      //Arrange
+      // Assert
       expect(name).toEqual("Board");
       expect(entity).toMatchObject({
         Name: "foo",
         Description: "Foo-tastic!",
       });
+      socketAsserts = true;
     });
 
     // Act
@@ -44,6 +47,11 @@ describe("Entities Module: save", () => {
       .then(() => {
         // Assert
         expect(emitSpy).toHaveBeenCalledTimes(1);
+        expect(emitSpy).lastCalledWith("Entity/save", "Board", {
+          Description: "Foo-tastic!",
+          Name: "foo",
+        });
+        expect(socketAsserts).toBeTruthy();
       })
       .catch((e) => {
         // Fail

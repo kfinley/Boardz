@@ -25,13 +25,4 @@ export function configureListeners(
       }
     );
   });
-  // socket.on("Entity/Boards", (data: { TotalRecords: number; Entities: [] }) => {
-  //   console.log(`Socket <-- Entity/Boards : ${JSON.stringify(data.Entities)}`);
-  //   commit("Entity/store", { typeName: "Boards", entities: data.Entities });
-  // });
-
-  // socket.on("Entity/Stages", (data: { TotalRecords: number; Entities: [] }) => {
-  //   console.log(`Socket <-- Entity/Stages : ${JSON.stringify(data.Entities)}`);
-  //   commit("Entity/store", { typeName: "Stages", entities: data.Entities });
-  // });
 }
