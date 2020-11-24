@@ -1,4 +1,4 @@
-import { Commit, Dispatch } from "vuex";
+import { Commit } from "vuex";
 
 export function configureListeners(
   commit: Commit,
@@ -6,9 +6,10 @@ export function configureListeners(
   entityTypes: { name: string }[]
 ) {
   socket.on("Entity/saved", (data: any) => {
-    console.log(data);
-    commit("Entity/setEntities", { name: data.EntityType, set: undefined });
-    commit("Entity/refreshEntities", { name: data.EntityType });
+    
+    //TODO: work this out...
+    //commit("Entity/setEntities", { name: data.EntityType, set: undefined });
+    commit("Entity/refreshSets", { type: { name: data.EntityType } });
     //commit("Entity/add", data);
     //commit("Entity/saved", data);
   });
@@ -17,11 +18,15 @@ export function configureListeners(
     const type = `${e.name}s`;
     socket.on(
       `Entity/${type}`,
-      (data: { TotalRecords: number; Entities: [] }) => {
+      (resp: { id: string; TotalRecords: number; Entities: [] }) => {
         console.log(
-          `Socket <-- Entity/${type} : ${JSON.stringify(data.Entities)}`
+          `Socket <-- Entity/${type} : ${JSON.stringify(resp.Entities)}`
         );
-        commit("Entity/store", { typeName: type, entities: data.Entities });
+        commit("Entity/store", {
+          typeName: type,
+          id: resp.id,
+          entities: resp.Entities,
+        });
       }
     );
   });

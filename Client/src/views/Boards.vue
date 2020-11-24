@@ -47,10 +47,6 @@ export default class BoardsView extends Vue {
     });
     return false;
   }
-
-  created() {
-    console.log((this as any)._uid);
-  }
 }
 </script>
 
