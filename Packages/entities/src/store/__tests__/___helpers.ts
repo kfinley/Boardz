@@ -11,6 +11,7 @@ export const storeFactory = (commit?: any) => {
     modules: {
       Entity: EntitiesModule,
     },
+    //TODO: do we need this?
     getters: {
       
     }

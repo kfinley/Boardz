@@ -43,13 +43,22 @@ export default class EntitiesModule {
 
       socket.on("Entity/getAll", (req: GetAllEntitiesRequest) => {
         //console.log(req);
-        const response = getEntities(req)
-          .then((get) => {
-            console.log(`Entity/${req.type}s, ${JSON.stringify(get.data)}`);
-            socket.emit(`Entity/${req.type}s`, get.data);
+        getEntities(req)
+          .then((resp: any) => {
+            console.log(
+              `Entity/${req.type}s, ${JSON.stringify({
+                id: req.id,
+                ...(resp.data as object),
+              })}`
+            );
+            socket.emit(`Entity/${req.type}s`, {
+              id: req.id,
+              ...(resp.data as object),
+            });
           })
-          .catch((e) => {
-            console.log(e);
+          .catch(() => {
+            console.log('Entity/getAll - Error');
+            //console.log(e);
           });
       });
 

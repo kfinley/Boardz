@@ -1,17 +1,21 @@
 
 <template>
-  <div>
+  <div v-if="board">
     <h2>{{ board.Name }} Board</h2>
     <div class="stage-wrapper">
-      <entity-list type="Stage" :id="board.Id" :filters="`Board.Id:${board.Id}`">
+      <entity-list type="Stage" :filters="`Board.Id:${board.Id}`">
         <template v-slot="{ entity: stage }">
-          <div class="stage">
+          <div class="hd-border stage">
             <div class="stage-header">
               {{ stage.Name }}
             </div>
-            <entity-list type="Card" :id="stage.Id" :filters="`Stage.Id:${stage.Id}`">
+            <entity-list type="Card" :filters="`Stage.Id:${stage.Id}`">
               <template v-slot="{ entity: card }">
-                {{ card.Title }}
+                <div class="hd-border card">
+                  <div class="card-header">
+                    {{ card.Title }}
+                  </div>
+                </div>
               </template>
             </entity-list>
           </div>
@@ -29,11 +33,11 @@
         </button>
         <div v-if="showAddStage" class="add-stage-wrapper">
           <input
-            ref="name"
+            ref="stageName"
             v-model="stageName"
             class="name-input"
             type="text"
-            name="name"
+            name="stageName"
             placeholder="Enter stage name..."
             autocomplete="off"
             dir="auto"
@@ -68,42 +72,58 @@ export default class BoardView extends Vue {
   private showAddStage = false;
 
   @Entity.State("entities")
-  entities!: { boards: EntitySet };
+  entities!: { boards: { set: [] } };
 
-  @Entity.Mutation
+  @Entity.Action
   save!: Function;
+
+  @Entity.Action
+  get!: Function;
 
   get nameSlug() {
     return this.$route.params.nameSlug;
   }
 
-  get board(): Board {
-    const set = this.entities.boards.result;
-    return set.filter(
+  get board(): Board | null {
+    return this.entities.boards.set?.filter(
       (x) => (x as any)["Name"].replace(" ", "-") === this.nameSlug
     )[0] as Board;
   }
 
   toggleAdd() {
     this.showAddStage = !this.showAddStage;
+    if (this.showAddStage) {
+      window.setTimeout(() => (this.$refs.stageName as any).focus(), 500);
+    }
   }
 
   addStage() {
     const stage = {
       Name: this.stageName,
       Board: {
-        Id: this.board.Id,
+        Id: this.board?.Id,
       },
     };
 
     console.log(stage);
 
     this.save({ type: Stage, entity: stage });
+    this.toggleAdd();
+    this.stageName = "";
+  }
+
+  created() {
+    const filters = `Name:${this.nameSlug.replace("-", " ")}`;
+    this.get({ name: "Board", filters });
   }
 }
 </script>
 
 <style>
+.card {
+  margin: 5px;
+}
+
 .add-stage-wrapper {
   width: 98%;
 }

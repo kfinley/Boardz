@@ -5,9 +5,6 @@ import { GetAllEntitiesRequest, EntityResult, SortDirection } from "./types";
 
 const localStorage = createLocalStorage();
 
-//import axiosCookieJarSupport from "axios-cookiejar-support";
-//import tough from "tough-cookie";
-
 const protocol = `${
   process.env.NODE_ENV == "production" ? "https://" : "http://"
 }`;
@@ -44,31 +41,12 @@ export const authHelper = {
   },
 };
 
-//export const cookieJar = new tough.CookieJar();
-// export function authToken() : string | null{
-//   const token = localStorage.getItem(`${Config.Agent}:access_token`);
-//   return token;
-// }
-
-// export function authHeader() {
-//   const token = authToken();
-//   if (token) {
-//     return { Authorization: "Bearer " + token };
-//   } else {
-//     return {};
-//   }
-// }
-
 export const api = {
   BaseUrl: baseUrl,
   Boards: `${baseUrl}/boards`,
   Auth: `${baseUrl}/auth`,
   Refresh: `${baseUrl}/refresh`,
 };
-
-//axiosCookieJarSupport(axios);
-//axios.defaults.withCredentials = true;
-//axios.defaults.jar = cookieJar;
 
 function urlFromType(type: string): string {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -140,11 +118,11 @@ export async function getEntities(req: GetAllEntitiesRequest) {
     url = addUrlParam(url, "pageNumber", req.pageNumber);
   }
 
-  if (req.pageSize !== 10) {
+  if (req.pageSize && req.pageSize !== 10) {
     url = addUrlParam(url, "pageSize", req.pageSize);
   }
 
-  if (req.properties.length > 0) {
+  if (req.properties?.length > 0) {
     let props = "";
     req.properties.forEach((prop) => {
       props = `${props}${prop},`;
@@ -152,7 +130,7 @@ export async function getEntities(req: GetAllEntitiesRequest) {
     url = addUrlParam(url, "properties", props.slice(0, -1));
   }
 
-  if (req.sortDirection == SortDirection.Descending) {
+  if (req.sortDirection === SortDirection.Descending) {
     url = addUrlParam(url, "sortDirection", req.sortDirection);
   }
 

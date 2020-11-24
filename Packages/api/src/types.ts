@@ -4,6 +4,7 @@ export enum SortDirection {
 }
 
 export interface GetAllEntitiesRequest {
+    id: string,
     type: string,
     pageNumber: number, 
     pageSize: number, 

@@ -42,6 +42,9 @@ export default class EntityList extends Vue {
   @Entity.Mutation
   setFilters!: Function;
 
+  @Entity.Action
+  removeSet!: Function;
+
   get keyName() {
     return this.type.toLowerCase() + "s";
   }
@@ -51,31 +54,36 @@ export default class EntityList extends Vue {
   }
 
   get entitySet() {
-    return (this.entities as any)[this.keyName] as EntitySet;
+    //TODO: Fix this
+    const sets = (this.entities as any)[this.keyName];
+    if (sets !== undefined) {
+      return sets[(this as any)._uid] as EntitySet;
+    }
+    return null;
   }
 
   created() {
-    const filtersArray = [];
-    if (this.filters?.indexOf(":")) {
-      console.log(this.filters);
-      filtersArray.push([
-        this.filters.split(":")[0],
-        this.filters.split(":")[1],
-      ]);
-    }
-    this.setFilters({ name: this.type, filters: JSON.stringify(filtersArray) });
+    this.setFilters({
+      name: this.type,
+      id: (this as any)._uid,
+      filters: this.filters,
+    });
   }
 
   mounted() {
-    console.log(this);
-    const refreshParams = { params: { type: { name: this.type }, view: "" } };
-    //this.refreshSet(refreshParams);
-    this.refresh({ name: this.type });
+    const refreshParams = { type: { name: this.type }, id: (this as any)._uid };
+    this.refreshSet(refreshParams);
+  }
+
+  destroyed() {
+    window.setTimeout(() => {
+      this.removeSet({ type: { name: this.type }, id: (this as any)._uid });
+    }, 500);
   }
 }
 </script>
 
-<style scoped>
+<style>
 ol,
 ul {
   list-style: none;

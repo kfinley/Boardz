@@ -12,7 +12,10 @@ describe("Entities Module: refreshSet", () => {
     // Reset mocks
     commit.mockReset();
     socketServer = new MockedSocket();
+    
+    // Reset State
     store.state.Entity.socket = socketServer.socketClient;
+    store.state.Entity.entities = {}
 
     // Important: setup the spy used in the post action asserts.
     emitSpy = jest.spyOn(store.state.Entity.socket, "emit");
@@ -51,5 +54,43 @@ describe("Entities Module: refreshSet", () => {
       });
   });
 
+  it("Should convert filters to stringified array", async () => {
+
+    // Arrange
+    const payload = { type: { name: "Board" }, id: "Foo" };    
+    store.state.Entity.entities = {
+      boards: {
+        Foo: {
+          filters: "Page.Id:123",
+        },
+      },
+    };
+
+    let socketAsserts = false;
+
+    // Arrange
+    socketServer.on("Entity/getAll", function(message: any) {
+      // Assert
+      expect(message).toMatchObject({
+        filters: "[[\"Page.Id\",\"123\"]]",
+        id: "Foo",
+        type: "Board",
+      });
+      socketAsserts = true;
+    });
+
+    // Act
+    store
+      .dispatch("Entity/refreshSet", payload)
+      .then(() => {
+        // Assert
+        expect(emitSpy).toHaveBeenCalledTimes(1);
+        expect(socketAsserts).toBeTruthy();
+      })
+      .catch((e) => {
+        // Fail
+        fail(e);
+      });
+  });
   //it("Should handle errors...")
 });

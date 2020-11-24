@@ -23,6 +23,63 @@ export default class EntitiesModule extends VuexModule implements EntityState {
     return this.socket;
   }
 
+  @Action get(params: { name: string; filters: string; properties?: string }) {
+    //TODO: this is dumb... make it smarter
+
+    const typeNameKey = `${params.name.toLowerCase()}s`;
+
+    let set = getProp(this.context.getters["getEntities"], [
+      typeNameKey,
+      "set",
+    ]) as [];
+
+    if (set === undefined) {
+      set = [];
+    }
+
+    //TODO: move to mutation
+    setProp(this.context.getters["getEntities"], [typeNameKey, "set"], set);
+
+    const filters =
+      params.filters.indexOf(":") > 0
+        ? JSON.stringify([
+            [params.filters.split(":")[0], params.filters.split(":")[1]],
+          ])
+        : "";
+
+    this.context.getters["getSocket"]?.emit("Entity/getAll", {
+      type: params.name,
+      filters: filters,
+      properties: params.properties,
+    });
+  }
+
+  @Mutation
+  refreshSets(params: { type: Function }) {
+    const typeNameKey = `${params.type.name.toLowerCase()}s`;
+    const sets = getProp(this.entities, [typeNameKey]);
+
+    for (const id in sets) {
+      // each set is keyed by it's id
+      if (id !== "set") {
+        this.socket?.emit("Entity/getAll", {
+          id,
+          type: params.type.name,
+          pageNumber: sets[id].pageNumber,
+          pageSize: sets[id].pageSize,
+          sortBy: sets[id].sortBy,
+          sortDirection: sets[id].sortDirection,
+          filters: sets[id].filters?.indexOf(":") > 0
+          ? JSON.stringify([
+              [sets[id].filters.split(":")[0], sets[id].filters.split(":")[1]],
+            ])
+          : "",
+          properties: sets[id].properties,
+        });
+      }
+    }
+  }
+
   @Action
   async refreshSet(params: { type: Function; id: string }) {
     const typeNameKey = `${params.type.name.toLowerCase()}s`;
@@ -46,6 +103,13 @@ export default class EntitiesModule extends VuexModule implements EntityState {
     //TODO: move to mutation
     setProp(this.context.getters["getEntities"], [typeNameKey, params.id], set);
 
+    set.filters =
+      set.filters.indexOf(":") > 0
+        ? JSON.stringify([
+            [set.filters.split(":")[0], set.filters.split(":")[1]],
+          ])
+        : "";
+
     this.context.getters["getSocket"]?.emit("Entity/getAll", {
       type: params.type.name,
       id: params.id,
@@ -58,24 +122,24 @@ export default class EntitiesModule extends VuexModule implements EntityState {
     });
   }
 
+  @Action
+  save(params: { type: Function; entity: any }) {
+    // console.log(
+    //   `EntityModule.save: ${params.type.name}, ${JSON.stringify(params.entity)}`
+    // );
+    this.context.getters["getSocket"]?.emit(
+      "Entity/save",
+      params.type.name,
+      params.entity
+    );
+  }
+
   @Mutation
   setEntities(params: { name: string; id: string; set: [] }) {
     setProp(
       this.entities,
       [`${params.name.toLowerCase()}s`, params.id, "result"],
       params.set
-    );
-  }
-
-  @Action
-  async save(params: { type: Function; entity: any }) {
-    console.log(
-      `EntityModule.save: ${params.type.name}, ${JSON.stringify(params.entity)}`
-    );
-    this.context.getters["getSocket"]?.emit(
-      "Entity/save",
-      params.type.name,
-      params.entity
     );
   }
 
@@ -106,6 +170,14 @@ export default class EntitiesModule extends VuexModule implements EntityState {
     }
   }
 
+  @Action
+  removeSet(params: { type: Function; id: string }) {
+    const typeNameKey = `${params.type.name.toLowerCase()}s`;
+
+    //TODO: move to mutation
+    delete this.context.getters["getEntities"][typeNameKey][params.id];
+  }
+
   //todo: rework socket injection
   @Mutation
   setup(params: { socket: SocketIOClient.Socket }) {
@@ -114,11 +186,19 @@ export default class EntitiesModule extends VuexModule implements EntityState {
 
   @Mutation
   store(params: { typeName: string; id: string; entities: [] }) {
-    setProp(
-      this.entities,
-      [params.typeName.toLowerCase(), params.id, "result"],
-      params.entities
-    );
+    if (params.id !== undefined) {
+      setProp(
+        this.entities,
+        [params.typeName.toLowerCase(), params.id, "result"],
+        params.entities
+      );
+    } else {
+      setProp(
+        this.entities,
+        [params.typeName.toLowerCase(), "set"],
+        params.entities
+      );
+    }
   }
 
   @Mutation
