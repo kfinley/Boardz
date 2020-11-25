@@ -2,7 +2,7 @@ import Vue, { PluginFunction, PluginObject } from "vue";
 import { Store } from "vuex";
 
 import { configureListeners } from "./sockets/index";
-import EntityModule from "./store/entity";
+import EntitiesModule from "./store/entities";
 import components from "./components";
 
 export interface EntitiesPlugin extends PluginObject<EntitiesPluginOptions> {
@@ -30,7 +30,7 @@ const plugin = {
       });
 
       // register Entities store module
-      options.store.registerModule("Entity", EntityModule);
+      options.store.registerModule("Entity", EntitiesModule);
 
       console.log("Entity module registered");
 

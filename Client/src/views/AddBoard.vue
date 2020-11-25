@@ -35,7 +35,7 @@ const Entity = namespace("Entity");
 @Component({})
 export default class AddBoards extends Vue {
   
-  @Entity.Mutation
+  @Entity.Action
   save!: Function;
 
   name = "";

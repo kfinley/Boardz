@@ -15,7 +15,7 @@ export interface EntitySet {
   sortDirection?: SortDirection;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   filters: any;
-  properties: Array<string>;
+  properties: string;
   result: [];  
 }
 

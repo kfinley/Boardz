@@ -95,7 +95,7 @@ export default class EntitiesModule extends VuexModule implements EntityState {
         pageNumber: 0,
         pageSize: 10,
         filters: "",
-        properties: [],
+        properties: "",
         result: [],
       };
     }
@@ -144,7 +144,7 @@ export default class EntitiesModule extends VuexModule implements EntityState {
   }
 
   @Mutation
-  setFilters(params: { name: string; id: string; filters: string }) {
+  setFilters(params: { name: string; id: string; filters: string}) {
     if (params.filters !== undefined) {
       const typeNameKey = `${params.name.toLowerCase()}s`;
 
@@ -156,13 +156,40 @@ export default class EntitiesModule extends VuexModule implements EntityState {
           pageNumber: 0,
           pageSize: 10,
           filters: "",
-          properties: [],
+          properties: "",
           result: [],
         };
       }
 
       if (set.filters !== params.filters) {
         set.filters = params.filters;
+        set.result = [];
+        //TODO: move to mutation
+        setProp(this.entities, [typeNameKey, params.id], set);
+      }
+    }
+  }
+
+  @Mutation
+  setProperties(params: { name: string; id: string; properties: string}) {
+    if (params.properties !== undefined) {
+      const typeNameKey = `${params.name.toLowerCase()}s`;
+
+      let set = getProp(this.entities, [typeNameKey, params.id]) as EntitySet;
+
+      if (set == undefined) {
+        set = {
+          id: params.id,
+          pageNumber: 0,
+          pageSize: 10,
+          filters: "",
+          properties: "",
+          result: [],
+        };
+      }
+
+      if (set.properties !== params.properties) {
+        set.properties = params.properties;
         set.result = [];
         //TODO: move to mutation
         setProp(this.entities, [typeNameKey, params.id], set);

@@ -122,12 +122,8 @@ export async function getEntities(req: GetAllEntitiesRequest) {
     url = addUrlParam(url, "pageSize", req.pageSize);
   }
 
-  if (req.properties?.length > 0) {
-    let props = "";
-    req.properties.forEach((prop) => {
-      props = `${props}${prop},`;
-    });
-    url = addUrlParam(url, "properties", props.slice(0, -1));
+  if (req.properties) {
+    url = addUrlParam(url, "properties", req.properties);
   }
 
   if (req.sortDirection === SortDirection.Descending) {

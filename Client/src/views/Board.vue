@@ -105,8 +105,6 @@ export default class BoardView extends Vue {
       },
     };
 
-    console.log(stage);
-
     this.save({ type: Stage, entity: stage });
     this.toggleAdd();
     this.stageName = "";
