@@ -1,5 +1,12 @@
+const { pathsToModuleNameMapper } = require('ts-jest/utils');
+// In the following statement, replace `./tsconfig` with the path to your `tsconfig` file
+// which contains the path mapping (ie the `compilerOptions.paths` option):
+const { compilerOptions } = require('./tsconfig.json');
+
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',
+  rootDir: ".",
+  testMatch: ['<rootDir>/src/**/*.spec.ts'],
   moduleFileExtensions: [
     "js",
     "ts",
@@ -7,12 +14,18 @@ module.exports = {
     "vue"
   ],
   transform: {
+    "^.+\\.tsx?$": "ts-jest",
     ".*\\.(vue)$": "vue-jest",
-    "^.+\\.ts?$": "ts-jest",
     "^.+\\.js$": "babel-jest"
   },
-  testMatch: [
-    "**/dist/**/?(*.)(spec|test).js?(x)"
-  ],
-  testURL: "http://localhost/"
-}
+  preset: 'ts-jest',
+  globals: {
+    'ts-jest': {
+      babelConfig: true,
+    }
+  },
+
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths /*, { prefix: '<rootDir>/' } */),
+  testURL: "http://localhost/",
+
+};

@@ -29,6 +29,7 @@ export default class EntityList extends Vue {
   @Prop() private type!: string;
   @Prop() private title!: string;
   @Prop() private filters!: string;
+  @Prop() private properties!: string;
 
   @Entity.State("entities")
   entities!: {};
@@ -42,10 +43,13 @@ export default class EntityList extends Vue {
   @Entity.Mutation
   setFilters!: Function;
 
+  @Entity.Mutation
+  setProperties!: Function;
+
   @Entity.Action
   removeSet!: Function;
 
-  get keyName() {
+  getKeyName() {
     return this.type.toLowerCase() + "s";
   }
 
@@ -54,11 +58,11 @@ export default class EntityList extends Vue {
   }
 
   get entitySet() {
-    //TODO: Fix this
-    const sets = (this.entities as any)[this.keyName];
+    const sets = (this.entities as any)[this.getKeyName()];
     if (sets !== undefined) {
       return sets[(this as any)._uid] as EntitySet;
     }
+
     return null;
   }
 
@@ -68,11 +72,21 @@ export default class EntityList extends Vue {
       id: (this as any)._uid,
       filters: this.filters,
     });
+    this.setProperties({
+      name: this.type,
+      id: (this as any)._uid,
+      properties: this.properties,
+    });
   }
 
   mounted() {
-    const refreshParams = { type: { name: this.type }, id: (this as any)._uid };
+    // if (this.type !== undefined) {
+    const refreshParams = {
+      type: { name: this.type },
+      id: (this as any)._uid,
+    };
     this.refreshSet(refreshParams);
+    // }
   }
 
   destroyed() {

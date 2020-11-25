@@ -34,7 +34,7 @@ describe("Entities Module: refreshSet", () => {
         id: "Foo",
         pageNumber: 0,
         pageSize: 10,
-        properties: [],
+        properties: "",
         type: "Board",
       });
       socketAsserts = true;

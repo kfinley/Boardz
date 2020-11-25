@@ -11,7 +11,7 @@ export interface GetAllEntitiesRequest {
     sortBy?: string,
     sortDirection?: SortDirection,
     filters: string,
-    properties: Array<string>
+    properties: string
 }
 
 export interface EntityResult<T> {
