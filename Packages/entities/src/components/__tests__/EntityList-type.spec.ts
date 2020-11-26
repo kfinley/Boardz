@@ -1,7 +1,7 @@
 import componentFactory from "./__factory";
 import Components from "../index";
 
-describe("EntityList.vue", () => {
+describe("EntityList.vue using type", () => {
   it("mounts", () => {
     const component = componentFactory(Components.EntityList, {
       type: "Board",

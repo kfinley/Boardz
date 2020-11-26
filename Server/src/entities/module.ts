@@ -11,8 +11,6 @@ Config.WebSocketPort = "8085";
 
 //TODO: fix this...
 api.BaseUrl = "http://boardz.app:8080/api/v1";
-api.Boards = `${api.BaseUrl}/boards`;
-api.Auth = `${api.BaseUrl}/auth`;
 
 export default class EntitiesModule {
   private server: http.Server;

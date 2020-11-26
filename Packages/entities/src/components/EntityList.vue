@@ -27,6 +27,7 @@ const Entity = namespace("Entity");
 @Component({})
 export default class EntityList extends Vue {
   @Prop() private type!: string;
+  @Prop() private set!: EntitySet;
   @Prop() private title!: string;
   @Prop() private filters!: string;
   @Prop() private properties!: string;
@@ -58,6 +59,10 @@ export default class EntityList extends Vue {
   }
 
   get entitySet() {
+    if (this.set !== undefined) {
+      return this.set;
+    }
+
     const sets = (this.entities as any)[this.getKeyName()];
     if (sets !== undefined) {
       return sets[(this as any)._uid] as EntitySet;
@@ -67,32 +72,35 @@ export default class EntityList extends Vue {
   }
 
   created() {
-    this.setFilters({
-      name: this.type,
-      id: (this as any)._uid,
-      filters: this.filters,
-    });
-    this.setProperties({
-      name: this.type,
-      id: (this as any)._uid,
-      properties: this.properties,
-    });
+    if (this.set === undefined) {
+      this.setFilters({
+        name: this.type,
+        id: (this as any)._uid,
+        filters: this.filters,
+      });
+      this.setProperties({
+        name: this.type,
+        id: (this as any)._uid,
+        properties: this.properties,
+      });
+    }
   }
 
   mounted() {
-    // if (this.type !== undefined) {
-    const refreshParams = {
-      type: { name: this.type },
-      id: (this as any)._uid,
-    };
-    this.refreshSet(refreshParams);
-    // }
+    if (this.set === undefined) {
+      const refreshParams = {
+        type: { name: this.type },
+        id: (this as any)._uid,
+      };
+      this.refreshSet(refreshParams);
+    }
   }
 
   destroyed() {
-    window.setTimeout(() => {
-      this.removeSet({ type: { name: this.type }, id: (this as any)._uid });
-    }, 500);
+    if (this.set === undefined)
+      window.setTimeout(() => {
+        this.removeSet({ type: { name: this.type }, id: (this as any)._uid });
+      }, 100);
   }
 }
 </script>
