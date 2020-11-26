@@ -3,8 +3,6 @@ import nock from "nock";
 import { ActionContext } from "vuex";
 import { AppState } from "../index";
 
-import { api } from "api";
-
 // mock State
 const mockState: AppState = {
   appName: 'test',
@@ -30,10 +28,10 @@ describe("setupSockets", () => {
   const commit = jest.fn();
 
   it("should setupSockets", async () => {
-    nock(api.BaseUrl)
-      .defaultReplyHeaders({ "access-control-allow-origin": "*" })
-      .get(api.Boards.replace(api.BaseUrl, ""))
-      .reply(200, mockBoardsReponse);
+    // nock(api.BaseUrl)
+    //   .defaultReplyHeaders({ "access-control-allow-origin": "*" })
+    //   .get("/boards")
+    //   .reply(200, mockBoardsReponse);
 
     const setupSockets = actions.setupSockets as Function;
 

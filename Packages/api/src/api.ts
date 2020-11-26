@@ -43,9 +43,6 @@ export const authHelper = {
 
 export const api = {
   BaseUrl: baseUrl,
-  Boards: `${baseUrl}/boards`,
-  Auth: `${baseUrl}/auth`,
-  Refresh: `${baseUrl}/refresh`,
 };
 
 function urlFromType(type: string): string {
@@ -56,12 +53,19 @@ function urlFromType(type: string): string {
   return `${api.BaseUrl}/${type.toLowerCase()}s`;
 }
 
+function addUrlParam(url: string, param: string, value: any): string {
+  if (url.indexOf("?") === -1) {
+    url = url + "?";
+  } else {
+    url = url + "&";
+  }
+  url = `${url}${param}=${value}`;
+  return url;
+}
+
 export async function request<T>(
   cfg: AxiosRequestConfig
 ): Promise<AxiosResponse<T>> {
-  // await get Access Token from store
-  // Build up config
-
   try {
     cfg.headers = { ...cfg.headers, ...authHelper.authHeader() };
 
@@ -101,16 +105,6 @@ export async function save(typeName: string, entity: any) {
   return await post(url, entity);
 }
 
-function addUrlParam(url: string, param: string, value: any): string {
-  if (url.indexOf("?") === -1) {
-    url = url + "?";
-  } else {
-    url = url + "&";
-  }
-  url = `${url}${param}=${value}`;
-  return url;
-}
-
 export async function getEntities(req: GetAllEntitiesRequest) {
   let url = urlFromType(req.type);
 
@@ -135,7 +129,6 @@ export async function getEntities(req: GetAllEntitiesRequest) {
   }
 
   if (req.filters !== "") {
-    // http://boardz.app:8080/api/v1/boards?pageNumber=0&pageSize=10&filters=%5B%5B%22%22%2C%22yo%22%5D%5D
     url = addUrlParam(url, "filters", encodeURI(req.filters));
   }
 

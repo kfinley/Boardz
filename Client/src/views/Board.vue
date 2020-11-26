@@ -3,13 +3,13 @@
   <div v-if="board">
     <h2>{{ board.Name }} Board</h2>
     <div class="stage-wrapper">
-      <entity-list type="Stage" :filters="`Board.Id:${board.Id}`">
+      <entity-list :set="board.Stages">
         <template v-slot="{ entity: stage }">
           <div class="hd-border stage">
             <div class="stage-header">
               {{ stage.Name }}
             </div>
-            <entity-list type="Card" :filters="`Stage.Id:${stage.Id}`">
+            <entity-list :set="stage.Cards">
               <template v-slot="{ entity: card }">
                 <div class="hd-border card">
                   <div class="card-header">
@@ -85,6 +85,7 @@ export default class BoardView extends Vue {
   }
 
   get board(): Board | null {
+    //TODO: move this to store
     return this.entities.boards.set?.filter(
       (x) => (x as any)["Name"].replace(" ", "-") === this.nameSlug
     )[0] as Board;
@@ -112,7 +113,8 @@ export default class BoardView extends Vue {
 
   created() {
     const filters = `Name:${this.nameSlug.replace("-", " ")}`;
-    this.get({ name: "Board", filters });
+    const properties = `Name,Stages`;
+    this.get({ name: "Board", filters, properties });
   }
 }
 </script>

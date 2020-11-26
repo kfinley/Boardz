@@ -1,6 +1,7 @@
 import qs from "querystring";
 import { Credentials, AuthResponse } from "../types";
-import { api, post } from "api";
+import { authApi } from "../authApi";
+import { post } from "api";
 
 export async function authenticate(creds: Credentials): Promise<AuthResponse> {
   const data = qs.stringify({
@@ -9,7 +10,7 @@ export async function authenticate(creds: Credentials): Promise<AuthResponse> {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response = await post<AuthResponse>(api.Auth, data, {
+  const response = await post<AuthResponse>(authApi.Auth, data, {
     // "User-Agent": Config.Agent,
     "Content-Type": "application/x-www-form-urlencoded",
   });

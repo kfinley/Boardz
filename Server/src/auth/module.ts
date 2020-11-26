@@ -12,8 +12,6 @@ Config.WebSocketPort = "8085";
 
 //TODO: fix this...
 api.BaseUrl = "http://boardz.app:8080/api/v1";
-api.Auth = `${api.BaseUrl}/auth`;
-api.Refresh = `${api.BaseUrl}/auth/refresh`;
 
 export default class AuthModule {
   private server: http.Server;
