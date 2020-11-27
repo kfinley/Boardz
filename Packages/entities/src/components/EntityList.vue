@@ -4,7 +4,7 @@
     <div v-if="entitySet">
       <ul class="entity-list">
         <li
-          v-for="entity in entitySet.result"
+          v-for="entity in entitySet"
           :key="entity.Id"
           class="entity-list-item"
         >
@@ -27,7 +27,7 @@ const Entity = namespace("Entity");
 @Component({})
 export default class EntityList extends Vue {
   @Prop() private type!: string;
-  @Prop() private set!: EntitySet;
+  @Prop() private set!: [];
   @Prop() private title!: string;
   @Prop() private filters!: string;
   @Prop() private properties!: string;
@@ -63,9 +63,11 @@ export default class EntityList extends Vue {
       return this.set;
     }
 
-    const sets = (this.entities as any)[this.getKeyName()];
-    if (sets !== undefined) {
-      return sets[(this as any)._uid] as EntitySet;
+    if (this.type !== undefined) {
+      const sets = (this.entities as any)[this.getKeyName()];
+      if (sets !== undefined && sets[(this as any)._uid] !== undefined) {
+        return sets[(this as any)._uid].result;
+      }
     }
 
     return null;
@@ -87,7 +89,7 @@ export default class EntityList extends Vue {
   }
 
   mounted() {
-    if (this.set === undefined) {
+    if (this.type !== undefined && this.set === undefined) {
       const refreshParams = {
         type: { name: this.type },
         id: (this as any)._uid,
@@ -97,7 +99,7 @@ export default class EntityList extends Vue {
   }
 
   destroyed() {
-    if (this.set === undefined)
+    if (this.type !== undefined)
       window.setTimeout(() => {
         this.removeSet({ type: { name: this.type }, id: (this as any)._uid });
       }, 100);
