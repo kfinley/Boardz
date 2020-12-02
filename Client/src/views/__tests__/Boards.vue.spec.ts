@@ -1,5 +1,4 @@
 import { mount, createLocalVue } from "@vue/test-utils";
-import { namespace } from "vuex-class";
 import Vuex from "vuex";
 import VueRouter from "vue-router";
 import Boards from "@/views/Boards.vue";

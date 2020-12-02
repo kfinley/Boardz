@@ -14,48 +14,27 @@
         </li>
       </ul>
     </div>
+    <slot name="footer"> </slot>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { namespace } from "vuex-class";
 import { EntitySet } from "../types";
-
-const Entity = namespace("Entity");
+import { entitiesModule } from "../store";
 
 @Component({})
 export default class EntityList extends Vue {
   @Prop() private type!: string;
+  @Prop() private id!: string;
   @Prop() private set!: [];
   @Prop() private title!: string;
   @Prop() private filters!: string;
   @Prop() private properties!: string;
+  @Prop() private removeSetOnDestroy!: boolean;
 
-  @Entity.State("entities")
-  entities!: {};
-
-  @Entity.Action
-  refresh!: Function;
-
-  @Entity.Action
-  refreshSet!: Function;
-
-  @Entity.Mutation
-  setFilters!: Function;
-
-  @Entity.Mutation
-  setProperties!: Function;
-
-  @Entity.Action
-  removeSet!: Function;
-
-  getKeyName() {
-    return this.type.toLowerCase() + "s";
-  }
-
-  get titleName() {
-    return this.type + "s";
+  get setId() {
+    return this.id ?? this.type;
   }
 
   get entitySet() {
@@ -64,9 +43,9 @@ export default class EntityList extends Vue {
     }
 
     if (this.type !== undefined) {
-      const sets = (this.entities as any)[this.getKeyName()];
-      if (sets !== undefined && sets[(this as any)._uid] !== undefined) {
-        return sets[(this as any)._uid].result;
+      const set = (entitiesModule.entities as any)[this.setId] as EntitySet;
+      if (set !== undefined) {
+        return set.result;
       }
     }
 
@@ -75,34 +54,22 @@ export default class EntityList extends Vue {
 
   created() {
     if (this.set === undefined) {
-      this.setFilters({
-        name: this.type,
-        id: (this as any)._uid,
+      entitiesModule.get({
+        id: this.setId,
+        type: this.type,
         filters: this.filters,
-      });
-      this.setProperties({
-        name: this.type,
-        id: (this as any)._uid,
         properties: this.properties,
       });
     }
   }
 
-  mounted() {
-    if (this.type !== undefined && this.set === undefined) {
-      const refreshParams = {
-        type: { name: this.type },
-        id: (this as any)._uid,
-      };
-      this.refreshSet(refreshParams);
-    }
-  }
-
   destroyed() {
-    if (this.type !== undefined)
+    if (this.type !== undefined && this.removeSetOnDestroy)
       window.setTimeout(() => {
-        this.removeSet({ type: { name: this.type }, id: (this as any)._uid });
-      }, 100);
+        entitiesModule.removeSet({
+          id: this.setId,
+        });
+      }, 50);
   }
 }
 </script>

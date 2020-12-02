@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-function setProp (obj: any, props: any[], value: any) {
+export default function setProp (obj: any, props: any[], value: any) {
   const prop = props.shift()
   if (!obj[prop]) {
     Vue.set(obj, prop, {})
@@ -15,5 +15,3 @@ function setProp (obj: any, props: any[], value: any) {
   }
   setProp(obj[prop], props, value)
 }
-
-export default setProp

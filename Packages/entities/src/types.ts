@@ -8,13 +8,11 @@ export enum SortDirection {
 }
 
 export interface EntitySet {
-  id: string;
   pageNumber: number;
   pageSize: number;
   sortBy?: string;
   sortDirection?: SortDirection;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  filters: any;
+  filters: string;
   properties: string;
   result: [];  
 }

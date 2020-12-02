@@ -1,6 +1,5 @@
 import Vuex from "vuex";
 import { createLocalVue } from "@vue/test-utils";
-
 import EntitiesModule from "../entities";
 
 export const storeFactory = (commit?: any) => {

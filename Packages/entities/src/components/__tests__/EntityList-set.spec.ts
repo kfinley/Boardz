@@ -1,25 +1,25 @@
-import componentFactory from "./__factory";
+import Factory from "./__factory";
 import Components from "../index";
-import { EntitySet } from "~/types";
+import { EntitySet } from "../../types";
 
 describe("EntityList.vue using set", () => {
-  const set = <EntitySet><unknown>{
+  const set = <EntitySet>(<unknown>{
     result: [
       {
         Id: 123,
-        Name: "yeah buddy!"
+        Name: "yeah buddy!",
       },
     ],
-  };
+  });
 
   it("mounts", () => {
-    const component = componentFactory(Components.EntityList, {
-      set
+    const component = Factory.component(Components.EntityList, {
+      set,
     });
     expect(component.vm).toBeInstanceOf(Object);
   });
   it("shows a title", () => {
-    const component = componentFactory(Components.EntityList, {
+    const component = Factory.component(Components.EntityList, {
       set,
       title: "Awesome Sauce!!",
     });
@@ -30,52 +30,58 @@ describe("EntityList.vue using set", () => {
     expect(title).toBeInstanceOf(Object);
     expect(title.text().trim()).toEqual("Awesome Sauce!!");
   });
-  it("does not call refreshSet when mounted", () => {
+  it("should not call refreshSet when mounted", () => {
     const mocks = {
-      "Entity/refreshSet": jest.fn(),
+      actions: { "Entity/refreshSet": jest.fn() },
+      mutations: {},
+      getters: {},
     };
 
-    const component = componentFactory(
+    const component = Factory.component(
       Components.EntityList,
       {
-        set
+        set,
       },
       mocks
     );
 
     expect(component.vm).toBeInstanceOf(Object);
-    expect(mocks["Entity/refreshSet"]).toHaveBeenCalledTimes(0);
+    expect(mocks.actions["Entity/refreshSet"]).toHaveBeenCalledTimes(0);
   });
-  it("dost not call setFilters when created", () => {
+  it("should not call setFilters when created", () => {
     const mocks = {
-      "Entity/setFilters": jest.fn(),
+      actions: {},
+      mutations: { "Entity/setFilters": jest.fn(), },
+      getters: {}
     };
 
-    const component = componentFactory(
+    const component = Factory.component(
       Components.EntityList,
       {
-        set
+        set,
       },
       mocks
     );
 
     expect(component.vm).toBeInstanceOf(Object);
-    expect(mocks["Entity/setFilters"]).toHaveBeenCalledTimes(0);
+    expect(mocks.mutations["Entity/setFilters"]).toHaveBeenCalledTimes(0);
   });
-  it("does not call setProperties when created", () => {
+  it("should not call setProperties when created", () => {
     const mocks = {
-      "Entity/setProperties": jest.fn(),
+      actions: {},
+      mutations: { "Entity/setProperties": jest.fn(), },
+      getters: {}
     };
 
-    const component = componentFactory(
+    const component = Factory.component(
       Components.EntityList,
       {
-        set
+        set,
       },
       mocks
     );
 
     expect(component.vm).toBeInstanceOf(Object);
-    expect(mocks["Entity/setProperties"]).toHaveBeenCalledTimes(0);
+    expect(mocks.mutations["Entity/setProperties"]).toHaveBeenCalledTimes(0);
   });
 });

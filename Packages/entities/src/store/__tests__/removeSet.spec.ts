@@ -1,13 +1,12 @@
 import { storeFactory } from "./___helpers";
 
 describe("Entities Module: removeSet", () => {
-  it("Should remove the set from the store based on Id", () => {
+  it("Should remove the set from the store based on Id", async () => {
     // Arrange
 
     const store = storeFactory();
-    store.state.Entity.entities.boards = {
+    store.state.Entity.entities = {
       Foo: {
-        id: "Foo",
         result: [
           {
             Id: "123-123-123",
@@ -23,12 +22,12 @@ describe("Entities Module: removeSet", () => {
       },
     };
 
-    const payload = { type: { name: "Board" }, id: "Foo" };
+    const payload = { id: "Foo" };
 
     // Act
-    store.dispatch("Entity/removeSet", payload);
+    await store.dispatch("Entity/removeSet", payload);
 
     // Assert
-    expect(store.state.Entity.entities.boards.Foo).toBeUndefined();
+    expect(store.state.Entity.entities.Foo).toBeUndefined();
   });
 });
