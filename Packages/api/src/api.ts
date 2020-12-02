@@ -128,7 +128,7 @@ export async function getEntities(req: GetAllEntitiesRequest) {
     url = addUrlParam(url, "sortBy", req.sortBy);
   }
 
-  if (req.filters !== "") {
+  if (req.filters) {
     url = addUrlParam(url, "filters", encodeURI(req.filters));
   }
 

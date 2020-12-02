@@ -25,14 +25,14 @@ export default class EntitiesModule {
     this.io.on("connect", (socket: SocketIO.Socket) => {
       console.log("Entity: Client connected");
 
-      socket.on("Entity/save", (name, entity) => {
+      socket.on("Entity/save", ({ id, type, entity }) => {
         console.log(`${socket.id}: Entity/save`);
-        console.log(name);
+        console.log(type);
         console.log(entity);
-        const response = save(name, entity)
+        const response = save(type, entity)
           .then((response: { data: any }) => {
             console.log(response.data);
-            socket.emit("Entity/saved", response.data);
+            socket.emit("Entity/saved", { id, data: response.data });
           })
           .catch((e: any) => {
             console.log(e);
@@ -55,7 +55,7 @@ export default class EntitiesModule {
             });
           })
           .catch(() => {
-            console.log('Entity/getAll - Error');
+            console.log("Entity/getAll - Error");
             //console.log(e);
           });
       });

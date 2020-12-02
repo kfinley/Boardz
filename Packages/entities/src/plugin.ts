@@ -31,9 +31,7 @@ const plugin = {
 
       // register Entities store module
       options.store.registerModule("Entity", EntitiesModule);
-
-      console.log("Entity module registered");
-
+      
       options.store.commit("Entity/setup", options);
 
       configureListeners(

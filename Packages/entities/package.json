@@ -61,13 +61,11 @@
     "ts-jest": "^24.3.0",
     "ts-vue-plugin": "^0.1.2",
     "typescript": "^3.9.7",
-    "vue-class": "^2.0.1",
     "vue-jest": "^3.0.7",
     "vue-loader": "^15.9.2",
     "vue-property-decorator": "^8.4.1",
     "vue-template-compiler": "^2.6.11",
     "vue-ts-loader": "0.0.3",
-    "vuex-class": "^0.3.2",
     "vuex-module-decorators": "^1.0.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"

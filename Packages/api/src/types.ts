@@ -10,8 +10,8 @@ export interface GetAllEntitiesRequest {
     pageSize: number, 
     sortBy?: string,
     sortDirection?: SortDirection,
-    filters: string,
-    properties: string
+    filters?: string,
+    properties?: string
 }
 
 export interface EntityResult<T> {

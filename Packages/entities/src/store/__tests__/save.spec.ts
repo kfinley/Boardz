@@ -20,44 +20,42 @@ describe("Entities Module: save", () => {
 
   it("Should emit message to socket on success", async () => {
     // Arrange
+    const testEntity = {
+      Description: "Foo-tastic!",
+      Name: "foo",
+    };
+
     const payload = {
-      type: { name: "Board" },
-      entity: {
-        Name: "foo",
-        Description: "Foo-tastic!",
-      },
+      id: "Foo",
+      type: "Board",
+      entity: testEntity,
     };
 
     let socketAsserts = false;
 
     // Mock
-    socketServer.on("Entity/save", (name: any, entity: any) => {
-      // Assert
-      expect(name).toEqual("Board");
-      expect(entity).toMatchObject({
-        Name: "foo",
-        Description: "Foo-tastic!",
-      });
-      socketAsserts = true;
-    });
+    socketServer.on(
+      "Entity/save",
+      (params: { id: string; type: string; entity: any }) => {
+        // Assert
+        expect(params.id).toEqual("Foo");
+        expect(params.type).toEqual("Board");
+        expect(params.entity).toMatchObject(testEntity);
+        socketAsserts = true;
+      }
+    );
 
     // Act
-    store
-      .dispatch("Entity/save", payload)
-      .then(() => {
-        // Assert
-        expect(emitSpy).toHaveBeenCalledTimes(1);
-        expect(emitSpy).lastCalledWith("Entity/save", "Board", {
-          Description: "Foo-tastic!",
-          Name: "foo",
-        });
-        expect(socketAsserts).toBeTruthy();
-      })
-      .catch((e) => {
-        // Fail
-        fail(e);
-      });
+    await store.dispatch("Entity/save", payload);
+
+    // Assert
+    expect(emitSpy).toHaveBeenCalledTimes(1);
+    expect(emitSpy).lastCalledWith("Entity/save", {
+      id: "Foo",
+      type: "Board",
+      entity: testEntity,
+    });
+    expect(socketAsserts).toBeTruthy();
   });
 
-  //it("Should handle errors...")
 });

@@ -3,15 +3,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import EntityState from "../state/entity";
-import getProp from "../helpers/getProp";
-import setProp from "../helpers/setProp";
+import { getProp, setProp } from "../helpers";
 import { EntitySet } from "../types";
 
 Vue.use(Vuex);
-const store = new Vuex.Store({});
+const store = new Vuex.Store<EntityState>({});
 
 @Module({ dynamic: true, namespaced: true, name: "Entity", store })
-export default class EntitiesModule extends VuexModule implements EntityState {
+export default class extends VuexModule implements EntityState {
   public entities = {};
   public socket = null as SocketIOClient.Socket | null;
 
@@ -23,136 +22,81 @@ export default class EntitiesModule extends VuexModule implements EntityState {
     return this.socket;
   }
 
-  @Action get(params: { name: string; filters: string; properties?: string }) {
-    //TODO: this is dumb... make it smarter
+  @Action
+  get(params: {
+    id?: string;
+    type: string;
+    filters?: string;
+    properties?: string;
+  }) {
+    params.id = params.id ?? params.type;
+    const state = this.context.state as EntityState;
 
-    const typeNameKey = `${params.name.toLowerCase()}s`;
-
-    let set = getProp(this.context.getters["getEntities"], [
-      typeNameKey,
-      "set",
-    ]) as [];
+    let set = getProp(state.entities, [params.id, "result"]) as [];
 
     if (set === undefined) {
       set = [];
     }
 
-    //TODO: move to mutation
-    setProp(this.context.getters["getEntities"], [typeNameKey, "set"], set);
+    setProp(state.entities, [params.id, "result"], set);
 
-    const filters =
-      params.filters.indexOf(":") > 0
+    params.filters =
+      params.filters !== undefined && params.filters?.indexOf(":") > 0
         ? JSON.stringify([
-            [params.filters.split(":")[0], params.filters.split(":")[1]],
+            [params.filters?.split(":")[0], params.filters?.split(":")[1]],
           ])
-        : "";
+        : undefined;
 
-    this.context.getters["getSocket"]?.emit("Entity/getAll", {
-      type: params.name,
-      filters: filters,
+    if (params.filters !== undefined) {
+      this.context.commit("setFilters", {
+        id: params.id,
+        filters: params.filters,
+      });
+    }
+
+    if (params.properties !== undefined) {
+      this.context.commit("setProperties", {
+        id: params.id,
+        properties: params.properties,
+      });
+    }
+
+    state.socket?.emit("Entity/getAll", {
+      id: params.id,
+      type: params.type,
+      filters: params.filters,
       properties: params.properties,
     });
   }
 
-  @Mutation
-  refreshSets(params: { type: Function }) {
-    const typeNameKey = `${params.type.name.toLowerCase()}s`;
-    const sets = getProp(this.entities, [typeNameKey]);
-
-    for (const id in sets) {
-      // each set is keyed by it's id
-      if (id !== "set") {
-        this.socket?.emit("Entity/getAll", {
-          id,
-          type: params.type.name,
-          pageNumber: sets[id].pageNumber,
-          pageSize: sets[id].pageSize,
-          sortBy: sets[id].sortBy,
-          sortDirection: sets[id].sortDirection,
-          filters: sets[id].filters?.indexOf(":") > 0
-          ? JSON.stringify([
-              [sets[id].filters.split(":")[0], sets[id].filters.split(":")[1]],
-            ])
-          : "",
-          properties: sets[id].properties,
-        });
-      }
-    }
-  }
-
   @Action
-  async refreshSet(params: { type: Function; id: string }) {
-    const typeNameKey = `${params.type.name.toLowerCase()}s`;
-
-    let set = getProp(this.context.getters["getEntities"], [
-      typeNameKey,
-      params.id,
-    ]) as EntitySet;
-
-    if (set === undefined) {
-      set = {
-        id: params.id,
-        pageNumber: 0,
-        pageSize: 10,
-        filters: "",
-        properties: "",
-        result: [],
-      };
-    }
-
-    //TODO: move to mutation
-    setProp(this.context.getters["getEntities"], [typeNameKey, params.id], set);
-
-    set.filters =
-      set.filters.indexOf(":") > 0
-        ? JSON.stringify([
-            [set.filters.split(":")[0], set.filters.split(":")[1]],
-          ])
-        : "";
-
-    this.context.getters["getSocket"]?.emit("Entity/getAll", {
-      type: params.type.name,
-      id: params.id,
-      pageNumber: set.pageNumber,
-      pageSize: set.pageSize,
-      sortBy: set.sortBy,
-      sortDirection: set.sortDirection,
-      filters: set.filters,
-      properties: set.properties,
-    });
-  }
-
-  @Action
-  save(params: { type: Function; entity: any }) {
+  save(params: { id?: string; type: string; entity: any }) {
     // console.log(
     //   `EntityModule.save: ${params.type.name}, ${JSON.stringify(params.entity)}`
     // );
+    params.id = params.id ?? params.type;
+
     this.context.getters["getSocket"]?.emit(
-      "Entity/save",
-      params.type.name,
-      params.entity
+      "Entity/save", {
+      id: params.id,
+      type: params.type,
+      entity: params.entity
+      }
     );
   }
 
-  @Mutation
-  setEntities(params: { name: string; id: string; set: [] }) {
-    setProp(
-      this.entities,
-      [`${params.name.toLowerCase()}s`, params.id, "result"],
-      params.set
-    );
+  @Action
+  removeSet(params: { id: string }) {
+    delete this.context.getters["getEntities"][params.id];
   }
 
   @Mutation
-  setFilters(params: { name: string; id: string; filters: string}) {
+  setFilters(params: { id: string; filters: string }) {
     if (params.filters !== undefined) {
-      const typeNameKey = `${params.name.toLowerCase()}s`;
-
-      let set = getProp(this.entities, [typeNameKey, params.id]) as EntitySet;
+      let set = getProp(this.entities, [params.id]) as EntitySet;
 
       if (set == undefined) {
         set = {
-          id: params.id,
           pageNumber: 0,
           pageSize: 10,
           filters: "",
@@ -165,21 +109,18 @@ export default class EntitiesModule extends VuexModule implements EntityState {
         set.filters = params.filters;
         set.result = [];
         //TODO: move to mutation
-        setProp(this.entities, [typeNameKey, params.id], set);
+        setProp(this.entities, [params.id], set);
       }
     }
   }
 
   @Mutation
-  setProperties(params: { name: string; id: string; properties: string}) {
+  setProperties(params: { id: string; properties: string }) {
     if (params.properties !== undefined) {
-      const typeNameKey = `${params.name.toLowerCase()}s`;
+      let set = getProp(this.entities, [params.id]) as EntitySet;
 
-      let set = getProp(this.entities, [typeNameKey, params.id]) as EntitySet;
-
-      if (set == undefined) {
+      if (set === undefined) {
         set = {
-          id: params.id,
           pageNumber: 0,
           pageSize: 10,
           filters: "",
@@ -192,17 +133,9 @@ export default class EntitiesModule extends VuexModule implements EntityState {
         set.properties = params.properties;
         set.result = [];
         //TODO: move to mutation
-        setProp(this.entities, [typeNameKey, params.id], set);
+        setProp(this.entities, [params.id], set);
       }
     }
-  }
-
-  @Action
-  removeSet(params: { type: Function; id: string }) {
-    const typeNameKey = `${params.type.name.toLowerCase()}s`;
-
-    //TODO: move to mutation
-    delete this.context.getters["getEntities"][typeNameKey][params.id];
   }
 
   //todo: rework socket injection
@@ -212,42 +145,32 @@ export default class EntitiesModule extends VuexModule implements EntityState {
   }
 
   @Mutation
-  store(params: { typeName: string; id: string; entities: [] }) {
-    if (params.id !== undefined) {
-      setProp(
-        this.entities,
-        [params.typeName.toLowerCase(), params.id, "result"],
-        params.entities
-      );
-    } else {
-      setProp(
-        this.entities,
-        [params.typeName.toLowerCase(), "set"],
-        params.entities
-      );
-    }
+  storeSet(params: { type: string; id: string; entities: [] }) {
+    params.id = params.id ?? params.type;
+    setProp(this.entities, [params.id, "result"], params.entities);
   }
 
   @Mutation
-  add(entity: any) {
-    console.log(`Entity/add: ${entity}`);
+  add(params: { id: string; entity: any }) {
+    
+    const resultSet = getProp(this.entities, [
+      params.id,
+      "result",
+    ]) as [];
 
-    const set = getProp(this.entities, [entity.EntityType.toLowerCase() + "s"]);
+    resultSet.push(params.entity as never);
 
-    set.all.push(entity as never);
-
-    setProp(
-      this.entities,
-      [`${entity.EntityType.toLowerCase()}s`, "all"],
-      set.all
-    );
-    throw "Fix this!";
-    this.context.dispatch("refresh", entity.EntityType);
+    setProp(this.entities, [params.id, "result"], resultSet);
   }
 
   @Mutation
-  saved(entity: any) {
-    console.log(`Entity saved: ${entity.EntityType} - ${entity}`);
+  saved(params: {id: string; entity: any }) {
+    
+    // const set = getProp(this.entities, [
+    //   params.id,
+    // ]) as EntitySet;
+
+    console.log(`Entity saved: ${params.entity.EntityType} - ${params.entity}`);
   }
 
   @Mutation
