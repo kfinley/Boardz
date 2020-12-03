@@ -50,6 +50,7 @@ export default class extends VuexModule implements EntityState {
     if (params.filters !== undefined) {
       this.context.commit("setFilters", {
         id: params.id,
+        type: params.type,
         filters: params.filters,
       });
     }
@@ -57,6 +58,7 @@ export default class extends VuexModule implements EntityState {
     if (params.properties !== undefined) {
       this.context.commit("setProperties", {
         id: params.id,
+        type: params.type,
         properties: params.properties,
       });
     }
@@ -76,13 +78,11 @@ export default class extends VuexModule implements EntityState {
     // );
     params.id = params.id ?? params.type;
 
-    this.context.getters["getSocket"]?.emit(
-      "Entity/save", {
+    this.context.getters["getSocket"]?.emit("Entity/save", {
       id: params.id,
       type: params.type,
-      entity: params.entity
-      }
-    );
+      entity: params.entity,
+    });
   }
 
   @Action
@@ -91,12 +91,13 @@ export default class extends VuexModule implements EntityState {
   }
 
   @Mutation
-  setFilters(params: { id: string; filters: string }) {
+  setFilters(params: { id: string; type: string; filters: string }) {
     if (params.filters !== undefined) {
       let set = getProp(this.entities, [params.id]) as EntitySet;
 
       if (set == undefined) {
         set = {
+          type: params.type,
           pageNumber: 0,
           pageSize: 10,
           filters: "",
@@ -107,6 +108,7 @@ export default class extends VuexModule implements EntityState {
 
       if (set.filters !== params.filters) {
         set.filters = params.filters;
+        set.type = params.type;
         set.result = [];
         //TODO: move to mutation
         setProp(this.entities, [params.id], set);
@@ -115,12 +117,13 @@ export default class extends VuexModule implements EntityState {
   }
 
   @Mutation
-  setProperties(params: { id: string; properties: string }) {
+  setProperties(params: { id: string; type: string; properties: string }) {
     if (params.properties !== undefined) {
       let set = getProp(this.entities, [params.id]) as EntitySet;
 
       if (set === undefined) {
         set = {
+          type: params.type,
           pageNumber: 0,
           pageSize: 10,
           filters: "",
@@ -131,6 +134,7 @@ export default class extends VuexModule implements EntityState {
 
       if (set.properties !== params.properties) {
         set.properties = params.properties;
+        set.type = params.type;
         set.result = [];
         //TODO: move to mutation
         setProp(this.entities, [params.id], set);
@@ -151,26 +155,19 @@ export default class extends VuexModule implements EntityState {
   }
 
   @Mutation
-  add(params: { id: string; entity: any }) {
-    
-    const resultSet = getProp(this.entities, [
-      params.id,
-      "result",
-    ]) as [];
+  saved(params: { id: string; entity: any }) {
+    // console.log(
+    //   `Entity saved: id: ${params.id} entity:${JSON.stringify(params.entity)}`
+    // );
 
-    resultSet.push(params.entity as never);
+    const set = (this.entities as any)[params.id] as EntitySet;
 
-    setProp(this.entities, [params.id, "result"], resultSet);
-  }
-
-  @Mutation
-  saved(params: {id: string; entity: any }) {
-    
-    // const set = getProp(this.entities, [
-    //   params.id,
-    // ]) as EntitySet;
-
-    console.log(`Entity saved: ${params.entity.EntityType} - ${params.entity}`);
+    this.socket?.emit("Entity/getAll", {
+      id: params.id,
+      type: set.type,
+      filters: set.filters,
+      properties: set.properties,
+    });
   }
 
   @Mutation

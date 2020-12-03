@@ -24,10 +24,9 @@ export function configureListeners(
     );
   });
 
-  socket.on("Entity/saved", (id: string, data: any) => {
-  //socket.emit("Entity/saved", { id, data: response.data });
-  
-    //commit("Entity/add", { id, entity: data });
-    
+  socket.on("Entity/saved", (resp: { id: string, data: any} ) => {
+    console.log(`Socket <-- Entity/saved : id: ${resp.id} entity: ${resp.data}`);
+
+    commit("Entity/saved", { id: resp.id, entity: resp.data });
   });
 }

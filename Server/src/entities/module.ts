@@ -26,17 +26,17 @@ export default class EntitiesModule {
       console.log("Entity: Client connected");
 
       socket.on("Entity/save", ({ id, type, entity }) => {
-        console.log(`${socket.id}: Entity/save`);
-        console.log(type);
-        console.log(entity);
+        console.log(`${socket.id}: Entity/save ${type} ${entity}`);
+        
         const response = save(type, entity)
-          .then((response: { data: any }) => {
+          .then((response: { data: any }) => {            
             console.log(response.data);
             socket.emit("Entity/saved", { id, data: response.data });
           })
           .catch((e: any) => {
             console.log(e);
           });
+          
       });
 
       socket.on("Entity/getAll", (req: GetAllEntitiesRequest) => {
@@ -54,9 +54,9 @@ export default class EntitiesModule {
               ...(resp.data as object),
             });
           })
-          .catch(() => {
+          .catch((e) => {
             console.log("Entity/getAll - Error");
-            //console.log(e);
+            console.log(e);
           });
       });
 
