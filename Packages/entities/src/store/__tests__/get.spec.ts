@@ -91,7 +91,7 @@ describe("Entities Module: get", () => {
     // Assert
     expect(commit).toHaveBeenCalledWith(
       "Entity/setFilters",
-      { filters: '[["Id","123"]]', id: "Board" },
+      { filters: '[["Id","123"]]', id: "Board", type: "Board" },
       undefined
     );
   });
@@ -106,10 +106,9 @@ describe("Entities Module: get", () => {
     // Assert
     expect(commit).toHaveBeenCalledWith(
       "Entity/setProperties",
-      { properties: "Name", id: "Board" },
+      { properties: "Name", id: "Board", type: "Board" },
       undefined
     );
   });
-  
   
 });

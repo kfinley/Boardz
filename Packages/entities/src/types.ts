@@ -8,6 +8,7 @@ export enum SortDirection {
 }
 
 export interface EntitySet {
+  type: string;
   pageNumber: number;
   pageSize: number;
   sortBy?: string;

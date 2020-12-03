@@ -35,6 +35,7 @@ export default class AddEntity extends Vue {
   private showAdd = false;
 
   @Prop() private type!: string;  
+  @Prop() private id!: string;
   @Prop() private properties!: string;
   @Prop() private defaultValues!: {};
 
@@ -60,7 +61,7 @@ export default class AddEntity extends Vue {
       (entity as any)[attr] = (this.$refs[attr] as any)[0].value;
     });
 
-    entitiesModule.save({ type: this.type, entity });
+    entitiesModule.save({ id: this.id, type: this.type, entity });
     this.toggleAdd();
     return entity;
   }
