@@ -25,13 +25,13 @@ import { entitiesModule } from "../store";
 
 @Component({})
 export default class EntityList extends Vue {
-  @Prop() private type!: string;
-  @Prop() private id!: string;
-  @Prop() private set!: [];
-  @Prop() private title!: string;
-  @Prop() private filters!: string;
-  @Prop() private properties!: string;
-  @Prop() private removeSetOnDestroy!: boolean;
+  @Prop() type!: string;
+  @Prop() id!: string;
+  @Prop() set!: [];
+  @Prop() title!: string;
+  @Prop() filters!: string;
+  @Prop() properties!: string;
+  @Prop() removeSetOnDestroy!: boolean;
 
   get setId() {
     return this.id ?? this.type;

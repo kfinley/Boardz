@@ -3,7 +3,7 @@ import { Board } from "./Board";
 
 export class Stage {
   public Id?: string;
-  public Name = "";
+  public Name? = "";
   public Board?: Board;
-  public Cards: Card[] = [];
+  public Cards?: Card[] = [];
 }

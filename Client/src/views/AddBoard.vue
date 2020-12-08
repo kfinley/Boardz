@@ -27,17 +27,11 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { namespace } from "vuex-class";
 import { Board } from "../entities";
-
-const Entity = namespace("Entity");
+import { entitiesModule } from "entities/src/index";
 
 @Component({})
 export default class AddBoards extends Vue {
-  
-  @Entity.Action
-  save!: Function;
-
   name = "";
   submitted = false;
 
@@ -56,10 +50,10 @@ export default class AddBoards extends Vue {
 
     // uppercase is due to current case enforcement on API side.
     const b = { Name: this.name };
-    
-    console.log(b);
 
-    await this.save({ type: Board, entity: b });
+    // We're using the ID of Boards here b/c that's the EntitySet we want updated upon save
+    // Still kludgy but working
+    await entitiesModule.save({ id: "Boards", type: Board.name, entity: b });
 
     this.$Progress.finish();
     this.$router.push({ name: "Boards" });
