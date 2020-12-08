@@ -38,6 +38,8 @@ export default class extends VuexModule implements EntityState {
       set = [];
     }
 
+    //TODO: clean all this up and move it to a mutation.
+    setProp(state.entities, [params.id, "type"], params.type)
     setProp(state.entities, [params.id, "result"], set);
 
     params.filters =

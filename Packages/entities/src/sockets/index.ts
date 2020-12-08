@@ -25,7 +25,7 @@ export function configureListeners(
   });
 
   socket.on("Entity/saved", (resp: { id: string, data: any} ) => {
-    console.log(`Socket <-- Entity/saved : id: ${resp.id} entity: ${resp.data}`);
+    console.log(`Socket <-- Entity/saved : id: ${resp.id} entity: ${JSON.stringify(resp.data)}`);
 
     commit("Entity/saved", { id: resp.id, entity: resp.data });
   });
