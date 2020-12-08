@@ -1,7 +1,7 @@
 
 <template>
   <div v-if="board">
-    <h2>{{ board.Name }} Board</h2>
+    <h2>{{ board.Name }}</h2>
     <div class="stages-wrapper">
       <entity-list :set="board.Stages">
         <template v-slot="{ entity: stage }">

@@ -114,6 +114,9 @@ export async function getEntities(req: GetAllEntitiesRequest) {
 
   if (req.pageSize && req.pageSize !== 10) {
     url = addUrlParam(url, "pageSize", req.pageSize);
+  } else {
+    //TODO: Fix this
+    url = addUrlParam(url, "pageSize", 25);
   }
 
   if (req.properties) {
