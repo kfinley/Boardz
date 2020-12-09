@@ -6,6 +6,7 @@
       transform: transformString,
       transition: transitionString,
       opacity: opacityString,
+      position: 'relative'
     }"
   >
     <slot />
@@ -86,6 +87,8 @@ export default class Draggable extends Vue implements DraggableProps {
 
   onStart(event: Interact.InteractEvent): void {
     this.isDraggable = false;
+    // Set the target z-index to a higher value than the last dropped element
+    event.target.style.zIndex = Math.ceil(new Date().getTime() / 1000).toString();
   }
 
   onMove(event: Interact.InteractEvent) {

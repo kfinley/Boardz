@@ -92,6 +92,5 @@ ul {
   width: 31.3%;
   padding: 0;
   margin: 0 2% 2% 0;
-  transform: translate(0);
 }
 </style>
