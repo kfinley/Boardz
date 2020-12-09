@@ -85,6 +85,7 @@ ul {
 .entity-list {
   display: flex;
   flex-wrap: wrap;
+  margin: 10px;
 }
 
 .entity-list-item {

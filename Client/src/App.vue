@@ -69,6 +69,11 @@ html {
   height: 100vh;
   height: var(--app-height);
 }
+
+body {
+    background-attachment: fixed;
+}
+
 #app {
   /* font-family: Avenir, Helvetica, Arial, sans-serif;*/
   -webkit-font-smoothing: antialiased;
@@ -129,4 +134,36 @@ button {
   hyphenate-limit-last: always;
   hyphenate-limit-zone: 8%;
 }
+
+.glass {
+	box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);	
+  border-radius: 255px 100px 225px 100px/100px 225px 100px 255px;
+  /* Above is shorthand for: */
+  // border-top-left-radius: 225px 100px;
+  // border-top-right-radius: 100px 225px;
+  // border-bottom-right-radius: 225px 100px;
+  // border-bottom-left-radius: 100px 225px;
+  margin: 15px 15px 5px 10px;
+  padding: 5px;
+  height: 110%;
+	position: relative;
+	z-index: 1;
+	background: inherit;
+	overflow: hidden;
+}
+
+.glass:before {
+	content: "";
+	position: absolute;
+	background: inherit;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
+	filter: blur(10px);
+	margin: -20px;
+}
+
 </style>

@@ -43,6 +43,7 @@ export default class EntityComponent extends Vue {
   @Prop() dropAccepts!: string;
 
   mounted() {
+    this.$el.classList.add('entity-wrapper');
     const id = (this as any)._uid;
     this.$el.id = this.entity.Id;
     if (this.droppable) {

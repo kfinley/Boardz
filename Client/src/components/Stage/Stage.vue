@@ -1,7 +1,7 @@
 <template>
   <entity :entity="stage" type="Stage" droppable="true" drop-accepts=".card-entity">
     <div class="hd-border stage">
-      <div class="stage-header">
+      <div class="stage-header glass">
         {{ stage.Name }}
       </div>
       <entity-list v-if="stage.Id !== undefined" :set="stage.Cards">
@@ -52,4 +52,8 @@ export default class StageComponent extends Vue {
 </script>
 
 <style scoped>
+.stage {
+  padding-bottom: 10px;
+}
+
 </style>
