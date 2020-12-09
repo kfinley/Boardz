@@ -26,21 +26,25 @@ export default class EntitiesModule {
       console.log("Entity: Client connected");
 
       socket.on("Entity/save", ({ id, type, entity }) => {
-        console.log(`${socket.id}: Entity/save ${type} ${entity}`);
-        
+        console.log(
+          `${socket.id}: Entity/save ${type} ${JSON.stringify(entity)}`
+        );
+
         const response = save(type, entity)
-          .then((response: { data: any }) => {            
+          .then((response: { data: any }) => {
             console.log(response.data);
             socket.emit("Entity/saved", { id, data: response.data });
           })
           .catch((e: any) => {
-            console.log(e);
+            if (e === "Refresh") {              
+              socket.emit("Auth/refresh");
+            } else {
+              console.log(e);
+            }
           });
-          
       });
 
       socket.on("Entity/getAll", (req: GetAllEntitiesRequest) => {
-        //console.log(req);
         getEntities(req)
           .then((resp: any) => {
             console.log(
@@ -55,8 +59,11 @@ export default class EntitiesModule {
             });
           })
           .catch((e) => {
-            console.log("Entity/getAll - Error");
-            console.log(e);
+            if (e === "Refresh") {              
+              socket.emit("Auth/refresh");
+            } else {
+              console.log(`Entity/getAll - Error: ${e}`);
+            }
           });
       });
 
