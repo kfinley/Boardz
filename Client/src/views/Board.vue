@@ -13,6 +13,7 @@
       id="Board"
       type="Stage"
       properties="Name"
+      button-size="xxx-large"
       :default-values="{ Board: { Id: `${board.Id}` } }"
       @entity-added="stageAdded"
     ></add-entity>

@@ -21,7 +21,7 @@
       </div>
     </div>
   </form>
-  <button v-else class="btn btn-primary" @click.prevent="toggleAdd">
+  <button v-else :class="`btn btn-primary ${buttonSize}`" @click.prevent="toggleAdd">
     Add {{ type }}
   </button>
 </template>
@@ -32,12 +32,13 @@ import { entitiesModule } from "../store";
 
 @Component({})
 export default class AddEntity extends Vue {
-  private showAdd = false;
+  showAdd = false;
 
-  @Prop() private type!: string;  
-  @Prop() private id!: string;
-  @Prop() private properties!: string;
-  @Prop() private defaultValues!: {};
+  @Prop() type!: string;  
+  @Prop() id!: string;
+  @Prop() properties!: string;
+  @Prop() defaultValues!: {};
+  @Prop({ default: "large "}) buttonSize!: string;
 
   get entityAttributes() {
     return this.properties.split(",");
@@ -68,7 +69,7 @@ export default class AddEntity extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
 .add-wrapper {
   width: 98%;
 }

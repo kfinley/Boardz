@@ -86,8 +86,23 @@ input,
 textarea {
   font-size: medium;
 }
-button {
+button.small {
+  font-size: small;
+}
+button.large {
+  font-size: large;
+}
+button.larger {
+  font-size: larger;
+}
+button.x-large {
+  font-size: x-large;
+}
+button.xx-large {
   font-size: xx-large;
+}
+button.xxx-large {
+  font-size: 43px;
 }
 form * {
   padding: 5px;

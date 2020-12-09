@@ -19,7 +19,7 @@
       </template>
     </entity-list>
     <div class="form-group">
-      <button class="btn btn-primary" @click="addBoard">Add</button>
+      <button class="btn btn-primary xxx-large" @click="addBoard">Add Board</button>
     </div>
   </div>
 </template>
