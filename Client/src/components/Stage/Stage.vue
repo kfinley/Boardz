@@ -1,5 +1,5 @@
 <template>
-  <entity :entity="stage" type="Stage" droppable="true" drop-accepts=".card-entity">
+  <entity :entity="stage" type="Stage" droppable="true" drop-accepts=".card-entity" :drop-handler="handleCardDrop" >
     <div class="hd-border stage">
       <div class="stage-header glass">
         {{ stage.Name }}
@@ -48,6 +48,13 @@ export default class StageComponent extends Vue {
     );
   }
   
+  handleCardDrop(event: Interact.InteractEvent) {
+    if (this.stage.Cards?.some(x => x.Id === (event.relatedTarget as any).id)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 </script>
 
