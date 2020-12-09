@@ -54,6 +54,7 @@ export default class StageComponent extends Vue {
 <style scoped>
 .stage {
   padding-bottom: 10px;
+  min-width: 365px;
 }
 
 </style>

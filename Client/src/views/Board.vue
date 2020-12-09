@@ -41,6 +41,7 @@ export default class BoardView extends Vue {
   get board(): Board | null {
     //TODO: move this to store
     if ((entitiesModule.entities as any).Board !== undefined) {
+
       return (entitiesModule.entities as any).Board.result?.filter(
         (x: object) =>
           ((x as any)["Name"] as string).replace(" ", "-") === this.nameSlug
@@ -62,5 +63,8 @@ export default class BoardView extends Vue {
 }
 </script>
 
-<style>
+<style scoped>
+.stages-wrapper {
+  min-width: 1155px;
+}
 </style>

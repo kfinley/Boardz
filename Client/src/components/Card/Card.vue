@@ -47,6 +47,7 @@ export default class CardComponent extends Vue {
   box-shadow: 0 8px 8px -3px rgba(0, 0, 0, 0.2),
               0 2px 6px -4px rgba(0, 0, 0, 0.14),
               0 1px 6px -3px rgba(0, 0, 0, 0.12);
+  min-width: 88px;
 }
 
 .card-header {
