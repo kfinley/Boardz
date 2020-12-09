@@ -1,7 +1,7 @@
 <template>
   <entity :entity="card" type="Card" :draggable="true" @entity-dropped="dropped">
     <slot>
-      <div class="hd-border card">
+      <div class="hd-border card pp" >
         <div class="card-header">
           {{ card.Title }}
         </div>
@@ -44,5 +44,13 @@ export default class CardComponent extends Vue {
 .card {
   margin: 5px;
   background: white;
+  box-shadow: 0 8px 8px -3px rgba(0, 0, 0, 0.2),
+              0 2px 6px -4px rgba(0, 0, 0, 0.14),
+              0 1px 6px -3px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  font-size: 14px;
+  margin: 4px;
 }
 </style>
