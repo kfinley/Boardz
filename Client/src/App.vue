@@ -109,6 +109,18 @@ form * {
 }
 button {
   background: #4d469b;
+  box-shadow: 0 8px 8px -3px rgba(0, 0, 0, 0.2),
+              0 2px 6px -4px rgba(0, 0, 0, 0.14),
+              0 1px 6px -3px rgba(0, 0, 0, 0.12);
+  -webkit-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  &:active {
+    transform: translateY(3px);
+  }
 }
 #nav {
   padding: 30px;
