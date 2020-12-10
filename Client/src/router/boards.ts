@@ -1,17 +1,11 @@
 import { RouteConfig } from "vue-router";
 
-export const routes: Array<RouteConfig> = [
-  {
-    path: "/boards",
-    name: "Boards",
-    component: () =>
-      import(/* webpackChunkName: "boards" */ "@/views/Boards.vue"),
-  },
+export const routes: Array<RouteConfig> = [  
   {
     path: "/board/:nameSlug",
     name: "Board",
     component: () =>
-      import(/* webpackChunkName: "board" */ "@/views/Board.vue"),
+      import(/* webpackChunkName: "board" */ "@/components/Board/Board.vue"),
   },
   {
     path: "/board/add",
