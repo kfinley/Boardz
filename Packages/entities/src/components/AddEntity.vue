@@ -47,9 +47,10 @@ export default class AddEntity extends Vue {
   @Emit("toggle")
   toggleAdd() {
     this.showAdd = !this.showAdd;
-    // if (this.showAdd) {
-    //   window.setTimeout(() => (this.$refs.Name as any).focus(), 500);
-    // }
+    
+    if (this.showAdd) {
+      this.$nextTick(() => (this.$refs[this.entityAttributes[0]] as any)[0].focus())
+    }
   }
 
   @Emit("entity-added")
