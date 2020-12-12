@@ -122,7 +122,8 @@ export default class BoardView extends Vue {
   display: block;
   position: relative;
   flex-shrink: 0;
-  height: 40px;
+  font-size: xx-large;
+  font-weight: bold;
   margin-top: 2px;
 }
 
