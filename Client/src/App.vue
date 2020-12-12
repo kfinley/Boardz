@@ -5,8 +5,7 @@
       <router-link to="/">Boardz</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-
-    <router-view />
+    <router-view id="content" />
   </div>
 </template>
 
@@ -70,7 +69,10 @@ html {
 }
 
 body {
-    background-attachment: fixed;
+  min-height: 100vh;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
 }
 
 #app {
@@ -80,6 +82,7 @@ body {
   text-align: center;
   font-size: x-large;
   color: #2c3e50;
+  height: 100vh;
 }
 input,
 textarea {
@@ -109,8 +112,7 @@ form * {
 button {
   background: #4d469b;
   box-shadow: 0 8px 8px -3px rgba(0, 0, 0, 0.2),
-              0 2px 6px -4px rgba(0, 0, 0, 0.14),
-              0 1px 6px -3px rgba(0, 0, 0, 0.12);
+    0 2px 6px -4px rgba(0, 0, 0, 0.14), 0 1px 6px -3px rgba(0, 0, 0, 0.12);
   -webkit-transition: all 0.3s ease;
   -ms-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
@@ -122,8 +124,8 @@ button {
   }
 }
 #nav {
-  padding: 30px;
-
+  padding: 15px;
+  height: 35px;
   a {
     font-weight: bold;
     color: #7171c9;
@@ -134,6 +136,9 @@ button {
   }
 }
 
+#content {
+  height: calc(100vh - 95px);
+}
 .pp {
   -webkit-hyphens: auto;
   -webkit-hyphenate-limit-before: 3;
@@ -162,7 +167,7 @@ button {
 }
 
 .glass {
-	box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .2);	
+  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.2);
   border-radius: 255px 100px 225px 100px/100px 225px 100px 255px;
   /* Above is shorthand for: */
   // border-top-left-radius: 225px 100px;
@@ -172,24 +177,23 @@ button {
   margin: 15px 15px 5px 10px;
   padding: 5px;
   height: 110%;
-	position: relative;
-	z-index: 1;
-	background: inherit;
-	overflow: hidden;
+  position: relative;
+  z-index: 1;
+  background: inherit;
+  // overflow: hidden;
 }
 
 .glass:before {
-	content: "";
-	position: absolute;
-	background: inherit;
-	z-index: -1;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
-	filter: blur(10px);
-	margin: -20px;
+  content: "";
+  position: absolute;
+  background: inherit;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5);
+  filter: blur(10px);
+  margin: -20px;
 }
-
 </style>

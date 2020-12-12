@@ -45,6 +45,7 @@ export default class Draggable extends Vue implements DraggableProps {
     const element = this.$refs.interactElement as Interact.Target;
 
     interact(element).draggable({
+      autoScroll: true,
       onstart: this.onStart,
       onmove: this.onMove,
       onend: this.onEnd,
@@ -94,6 +95,7 @@ export default class Draggable extends Vue implements DraggableProps {
   onMove(event: Interact.InteractEvent) {
     const x = (this.position.x || 0) + event.dx;
     const y = (this.position.y || 0) + event.dy;
+    
     let rotation = this.maxRotation * (x / this.xThreshold);
 
     if (rotation > this.maxRotation) rotation = this.maxRotation;
@@ -103,9 +105,12 @@ export default class Draggable extends Vue implements DraggableProps {
   }
 
   onEnd(event: Interact.InteractEvent) {
+    const x = (this.position.x || 0) + event.dx;
+    const y = (this.position.y || 0) + event.dy;
+    
     this.isDraggable = true;
     this.dragged = true;
-    this.position.rotation = 0;
+    this.setPosition({ x, y, rotation: 0});
   }
 }
 </script>

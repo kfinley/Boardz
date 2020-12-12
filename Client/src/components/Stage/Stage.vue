@@ -1,5 +1,11 @@
 <template>
-  <entity :entity="stage" type="Stage" droppable="true" drop-accepts=".card-entity" :drop-handler="handleCardDrop" >
+  <entity
+    :entity="stage"
+    type="Stage"
+    droppable="true"
+    drop-accepts=".card-entity"
+    :drop-handler="handleCardDrop"
+  >
     <div class="hd-border stage">
       <div class="stage-header glass">
         {{ stage.Name }}
@@ -32,10 +38,10 @@ import EntityComponent from "../Entity";
 import CardComponent from "../Card";
 
 @Component({
-    components: {
-        card: CardComponent,
-        entity: EntityComponent
-    }
+  components: {
+    card: CardComponent,
+    entity: EntityComponent,
+  },
 })
 export default class StageComponent extends Vue {
   name = "Stage";
@@ -47,13 +53,13 @@ export default class StageComponent extends Vue {
       x?.Stages?.filter((s) => s.Id === card?.Stage?.Id)[0].Cards?.push(card)
     );
   }
-  
+
   handleCardDrop(event: Interact.InteractEvent) {
-    if (this.stage.Cards?.some(x => x.Id === (event.relatedTarget as any).id)) {
-      return false;
-    } else {
-      return true;
-    }
+    return {
+      emit: !this.stage.Cards?.some(
+        (x) => x.Id === (event.relatedTarget as any).id
+      ),
+    };
   }
 }
 </script>
@@ -63,5 +69,4 @@ export default class StageComponent extends Vue {
   padding-bottom: 10px;
   min-width: 365px;
 }
-
 </style>
