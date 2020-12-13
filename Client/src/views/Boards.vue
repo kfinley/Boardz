@@ -1,6 +1,6 @@
 <template>
   <div>
-    <entity-list title="All Boards" type="Board" id="Boards">
+    <entity-list title="All the Boardz" type="Board" id="Boards">
       <template v-slot="{ entity: board }">
         <a
           class="hd-border board"

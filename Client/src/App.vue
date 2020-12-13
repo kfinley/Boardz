@@ -1,10 +1,6 @@
 
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Boardz</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view id="content" />
   </div>
 </template>
@@ -123,18 +119,6 @@ button {
     transform: translateY(3px);
   }
 }
-#nav {
-  padding: 15px;
-  height: 35px;
-  a {
-    font-weight: bold;
-    color: #7171c9;
-
-    &.router-link-exact-active {
-      color: #0ca4f5;
-    }
-  }
-}
 
 #content {
   height: calc(100vh - 95px);
@@ -196,4 +180,5 @@ button {
   filter: blur(10px);
   margin: -20px;
 }
+
 </style>

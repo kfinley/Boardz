@@ -1,5 +1,9 @@
 <template>
-  <form v-if="showAdd">
+  <form
+    v-if="showAdd"
+    :class="`glass ${float ? `float` : `in-place`}`"
+    :style="{ height: calcHeight, background: background }"
+  >
     <div class="add-wrapper form-group">
       <input
         v-for="attr in entityAttributes"
@@ -17,11 +21,21 @@
         <button class="add-button" @click.prevent="addEntity">
           Add {{ type }}
         </button>
-        <a class="icon-lg left" href="#" @click.prevent="toggleAdd">X</a>
+        <a
+          class="icon-lg left"
+          href="#"
+          @click.prevent="toggleAdd"
+          :style="closeStyle"
+          >X</a
+        >
       </div>
     </div>
   </form>
-  <button v-else :class="`btn btn-primary ${buttonSize}`" @click.prevent="toggleAdd">
+  <button
+    v-else
+    :class="`btn btn-primary ${buttonSize}`"
+    @click.prevent="toggleAdd"
+  >
     Add {{ type }}
   </button>
 </template>
@@ -34,11 +48,14 @@ import { entitiesModule } from "../store";
 export default class AddEntity extends Vue {
   showAdd = false;
 
-  @Prop() type!: string;  
+  @Prop() type!: string;
   @Prop() id!: string;
   @Prop() properties!: string;
   @Prop() defaultValues!: {};
-  @Prop({ default: "large "}) buttonSize!: string;
+  @Prop({ default: "large " }) buttonSize!: string;
+  @Prop({ default: "darkslateblue" }) background!: string;
+  @Prop() closeColor!: string;
+  @Prop({ default: false}) float!: boolean;
 
   get entityAttributes() {
     return this.properties.split(",");
@@ -47,9 +64,11 @@ export default class AddEntity extends Vue {
   @Emit("toggle")
   toggleAdd() {
     this.showAdd = !this.showAdd;
-    
+
     if (this.showAdd) {
-      this.$nextTick(() => (this.$refs[this.entityAttributes[0]] as any)[0].focus())
+      this.$nextTick(() =>
+        (this.$refs[this.entityAttributes[0]] as any)[0].focus()
+      );
     }
   }
 
@@ -67,6 +86,15 @@ export default class AddEntity extends Vue {
     this.toggleAdd();
     return entity;
   }
+
+  get calcHeight() {
+    return `${45 + this.entityAttributes.length * 45}px`;
+  }
+
+  get closeStyle() {
+    if (this.closeColor !== undefined) return { color: this.closeColor };
+    else return "";
+  }
 }
 </script>
 
@@ -81,7 +109,7 @@ export default class AddEntity extends Vue {
   display: block;
   margin: 0;
   transition: margin 85ms ease-in, background 85ms ease-in;
-  width: 93%;
+  width: 90%;
 }
 
 .add-controls {
@@ -110,7 +138,7 @@ export default class AddEntity extends Vue {
 .icon-lg,
 .icon-md,
 .icon-sm {
-  color: #42526e;
+  color: #969ca5;
 }
 
 .icon-lg,
@@ -140,5 +168,20 @@ export default class AddEntity extends Vue {
 
 .left {
   float: left;
+}
+
+.float {
+  position: absolute;
+  z-index: 1000;
+  margin: 5px 5px 5px 5px;
+  padding: 0px;
+  right: 3%;
+}
+
+.in-place {
+  left: 6%;
+  width: 80%;
+  margin-bottom: 22px;
+  margin-top: 20px;
 }
 </style>

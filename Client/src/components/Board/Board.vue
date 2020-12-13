@@ -10,19 +10,34 @@
     :drop-handler="handleCardDrop"
   >
     <div class="header-wrapper">
-      <div class="controls-left"></div>
+      <div class="controls-left">
+        <router-link to="/">All Boardz</router-link> |
+        <router-link to="/about">About</router-link>
+      </div>
       <div class="header-title">{{ board.Name }}</div>
       <div class="controls-right">
         <add-entity
           id="Board"
+          type="Card"
+          properties="Title"
+          float="true"
+          :default-values="{ Board: { Id: `${board.Id}` } }"
+          @entity-added="cardAdded"
+          @toggle="toggleControls"
+        >
+        </add-entity>
+        <add-entity
+          id="Board"
           type="Stage"
           properties="Name"
+          float="true"
           :default-values="{ Board: { Id: `${board.Id}` } }"
           @entity-added="stageAdded"
+          @toggle="toggleControls"
         ></add-entity>
       </div>
     </div>
-      
+
     <div class="stages-wrapper">
       <entity-list :set="board.Stages">
         <template v-slot="{ entity: stage }">
@@ -44,7 +59,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { Component } from "vue-property-decorator";
-import { Board, Stage } from "../../entities";
+import { Board, Card, Stage } from "../../entities";
 import { entitiesModule } from "entities/src";
 import CardComponent from "../Card";
 import StageComponent from "../Stage";
@@ -54,7 +69,7 @@ import EntityComponent from "../Entity";
   components: {
     card: CardComponent,
     entity: EntityComponent,
-    stage: StageComponent,
+    stage: StageComponent
   },
 })
 export default class BoardView extends Vue {
@@ -80,8 +95,20 @@ export default class BoardView extends Vue {
   }
 
   stageAdded(stage: Stage) {
-    //TODO: Move this into store
     this.board?.Stages.push(stage);
+  }
+
+  cardAdded(card: Card) {
+    this.board?.Cards.push(card);
+  }
+
+  toggleControls(e: any) {
+    document
+      .querySelectorAll<HTMLElement>(".controls-right > button")
+      .forEach((e) => {
+        if (e.style.display === "none") e.style.display = "";
+        else e.style.display = "none";
+      });
   }
 
   handleCardDrop(event: Interact.InteractEvent) {
@@ -95,7 +122,7 @@ export default class BoardView extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .board {
   height: calc(100vh - 95px);
   position: relative;
@@ -108,6 +135,7 @@ export default class BoardView extends Vue {
 }
 .header-wrapper {
   display: flex;
+  margin-top: 10px;
   overflow: hidden;
   padding: 6px;
   box-sizing: border-box;
@@ -127,20 +155,35 @@ export default class BoardView extends Vue {
   margin-top: 2px;
 }
 
-.controls-right>button {
+.controls-right > button {
   float: right;
   margin-right: 35px;
 }
 
-.controls-right>form {
+.controls-right > form {
   margin-right: 35px;
 }
 
 .controls-right {
-  display: flex;  
+  display: flex;
   flex-grow: 1;
   flex-basis: 100%;
-  justify-content: flex-end;  
+  justify-content: flex-end;
 }
 
+.controls-left {
+  padding: 15px;
+  height: 35px;
+  a {
+    font-weight: bold;
+    text-decoration: none;
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #7171c9;
+
+    &.router-link-exact-active {
+      color: #0ca4f5;
+    }
+  }
+}
 </style>
