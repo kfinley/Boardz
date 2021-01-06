@@ -14,7 +14,7 @@
   "author": "Kyle Finley",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "localstorage-ponyfill": "^1.0.2",
     "querystring": "^0.2.0",
     "socket.io-client": "^3.0.1"
