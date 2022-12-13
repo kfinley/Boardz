@@ -32,7 +32,7 @@
     "config": "file:../Packages/dist/config-0.1.0.tgz",
     "cors": "^2.8.5",
     "entities": "file:../packages/dist/entities-0.1.0.tgz",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "socket.io": "^3.0.1"
   }
 }
